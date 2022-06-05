@@ -12,10 +12,29 @@ import Cocoa
 
 // have folder where you place plugin folders containing json (which specifies the shell env, the name/relative-location of root script, the regex match for the plugin to popup on, and the icon name), icon image, and the code
 
+/**
+ type of popup window to trigger.
+ 
+ there are three button types to be handled:
+ 1. **copy-paste**: copy selection → modify text → paste text, replacing original selection
+ 2. **copy**: copy selection → trigger something, but don't replace original selection
+ 3. **paste**: paste from the clipboard (could also modify the clipboard text before pasting)
+ 
+ all button types will appear on a selection event, though button type 3 will only appear on a long-press event, thus we need to make sure to mark non-paste buttons so we know not to incluide them in a paste-type popup
+ */
+enum PopupType {
+    case copyOrCopyPaste
+    case paste
+}
+enum SelectionMethod {
+    case accessibility
+    case keyPress
+}
+
 struct Data {
     var currentSelection: String = ""
-    var selectionType: String = "all"
-    var selectionAquisitionMethod: String = ""
+    var popupType: PopupType = .copyOrCopyPaste
+    var selectionMethod: SelectionMethod = .accessibility
     var prevFocusedApp: NSRunningApplication! = nil
     var accessibilityFocusedElement: AnyObject! = nil
 }

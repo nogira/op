@@ -1,5 +1,5 @@
 //
-//  Detect Events.swift
+//  addEventListeners.swift
 //  op
 //
 //  Created by nogira on 2/6/2022.
@@ -40,14 +40,12 @@ func addEventListeners() {
             timeOfMouseDown = event.timestamp
             
             // hide popup on click. if double click or drag it will reappear
-//            let popupWindow: NSWindow? = NSApp.windows[1]
-//            if let window: NSWindow = popupWindow {
-//                window.orderOut(nil)
-//            }
+            let popupWindow: NSWindow? = NSApp.windows[1]
+            if let window: NSWindow = popupWindow {
+                window.orderOut(nil)
+            }
             
             startDragLocation = event.locationInWindow
-
-//            print("hello")
             
             if event.clickCount == 2 || event.clickCount == 3 {
                 handleSelection(startPos: startDragLocation, endPos: startDragLocation!)
@@ -90,8 +88,14 @@ func addEventListeners() {
                         let timeDiff = timeOfMouseUp - timeOfMouseDown
                         if timeDiff > 0.40 {
                             print("this is long press")
+                            // FIXME: it is possible to select text then hold down button with selection remaining, so the paste will paste over the selection
+                            // bug or feature ???
                             
                             // TODO: paste popup instead of copy popup
+                            
+                            data.popupType = .paste
+                            openPopWindow(startPos: startDragLocation, endPos: currentLocation)
+                            
                         }
                     }
                 }

@@ -11,6 +11,10 @@
 		F405983D284C3F2F00611569 /* accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = F405983C284C3F2F00611569 /* accessibility.swift */; };
 		F41CF7C92848B27000F62880 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41CF7C82848B27000F62880 /* Data.swift */; };
 		F42C390C284C616F00CF30DD /* handleSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42C390B284C616F00CF30DD /* handleSelection.swift */; };
+		F42C390E284C749400CF30DD /* menubar-action.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42C390D284C749400CF30DD /* menubar-action.swift */; };
+		F42C3911284C74B700CF30DD /* key-press.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42C3910284C74B700CF30DD /* key-press.swift */; };
+		F42C3913284C780B00CF30DD /* handlePaste.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42C3912284C780B00CF30DD /* handlePaste.swift */; };
+		F42C3916284C7C3E00CF30DD /* openPopWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42C3915284C7C3E00CF30DD /* openPopWindow.swift */; };
 		F4682315284B4FB200AD3DBD /* copy-event.scpt in Resources */ = {isa = PBXBuildFile; fileRef = F4682314284B4FB100AD3DBD /* copy-event.scpt */; };
 		F47EF82F284499AB00DEB84B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47EF82E284499AB00DEB84B /* AppDelegate.swift */; };
 		F47EF831284499AB00DEB84B /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47EF830284499AB00DEB84B /* SettingsViewController.swift */; };
@@ -28,6 +32,10 @@
 		F405983C284C3F2F00611569 /* accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = accessibility.swift; sourceTree = "<group>"; };
 		F41CF7C82848B27000F62880 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		F42C390B284C616F00CF30DD /* handleSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = handleSelection.swift; sourceTree = "<group>"; };
+		F42C390D284C749400CF30DD /* menubar-action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "menubar-action.swift"; sourceTree = "<group>"; };
+		F42C3910284C74B700CF30DD /* key-press.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "key-press.swift"; sourceTree = "<group>"; };
+		F42C3912284C780B00CF30DD /* handlePaste.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = handlePaste.swift; sourceTree = "<group>"; };
+		F42C3915284C7C3E00CF30DD /* openPopWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = openPopWindow.swift; sourceTree = "<group>"; };
 		F4682314284B4FB100AD3DBD /* copy-event.scpt */ = {isa = PBXFileReference; lastKnownFileType = file; path = "copy-event.scpt"; sourceTree = "<group>"; };
 		F47EF82B284499AB00DEB84B /* op.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = op.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F47EF82E284499AB00DEB84B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -54,6 +62,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F42C390F284C74A000CF30DD /* selection & paste */ = {
+			isa = PBXGroup;
+			children = (
+				F42C390B284C616F00CF30DD /* handleSelection.swift */,
+				F42C3912284C780B00CF30DD /* handlePaste.swift */,
+				F42C390D284C749400CF30DD /* menubar-action.swift */,
+				F42C3910284C74B700CF30DD /* key-press.swift */,
+				F405983A284BA3D900611569 /* jxa-copy-event.scpt */,
+				F4682314284B4FB100AD3DBD /* copy-event.scpt */,
+			);
+			path = "selection & paste";
+			sourceTree = "<group>";
+		};
+		F42C3914284C7C0700CF30DD /* popup */ = {
+			isa = PBXGroup;
+			children = (
+				F47EF8822845015B00DEB84B /* PopupViewController.swift */,
+				F47EF87E2844F28200DEB84B /* PopupWindowController.swift */,
+				F42C3915284C7C3E00CF30DD /* openPopWindow.swift */,
+			);
+			path = popup;
+			sourceTree = "<group>";
+		};
 		F47EF822284499AB00DEB84B = {
 			isa = PBXGroup;
 			children = (
@@ -79,13 +110,10 @@
 				F41CF7C82848B27000F62880 /* Data.swift */,
 				F47EF8C22847AEA700DEB84B /* addEventListeners.swift */,
 				F405983C284C3F2F00611569 /* accessibility.swift */,
-				F42C390B284C616F00CF30DD /* handleSelection.swift */,
-				F4682314284B4FB100AD3DBD /* copy-event.scpt */,
-				F405983A284BA3D900611569 /* jxa-copy-event.scpt */,
+				F42C390F284C74A000CF30DD /* selection & paste */,
+				F42C3914284C7C0700CF30DD /* popup */,
 				F47EF85E2844E1F900DEB84B /* SettingsWindowController.swift */,
 				F47EF830284499AB00DEB84B /* SettingsViewController.swift */,
-				F47EF87E2844F28200DEB84B /* PopupWindowController.swift */,
-				F47EF8822845015B00DEB84B /* PopupViewController.swift */,
 				F47EF832284499AD00DEB84B /* Assets.xcassets */,
 				F47EF837284499AD00DEB84B /* op.entitlements */,
 				F47EF8C02847146800DEB84B /* StatusBar.swift */,
@@ -165,13 +193,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				F47EF8C12847146800DEB84B /* StatusBar.swift in Sources */,
+				F42C3913284C780B00CF30DD /* handlePaste.swift in Sources */,
 				F47EF8842845015B00DEB84B /* PopupViewController.swift in Sources */,
+				F42C3911284C74B700CF30DD /* key-press.swift in Sources */,
 				F47EF831284499AB00DEB84B /* SettingsViewController.swift in Sources */,
 				F47EF8BF284711AF00DEB84B /* main.swift in Sources */,
 				F42C390C284C616F00CF30DD /* handleSelection.swift in Sources */,
 				F47EF8C32847AEA700DEB84B /* addEventListeners.swift in Sources */,
+				F42C3916284C7C3E00CF30DD /* openPopWindow.swift in Sources */,
 				F47EF85F2844E1F900DEB84B /* SettingsWindowController.swift in Sources */,
 				F47EF8802844F28200DEB84B /* PopupWindowController.swift in Sources */,
+				F42C390E284C749400CF30DD /* menubar-action.swift in Sources */,
 				F41CF7C92848B27000F62880 /* Data.swift in Sources */,
 				F405983D284C3F2F00611569 /* accessibility.swift in Sources */,
 				F47EF82F284499AB00DEB84B /* AppDelegate.swift in Sources */,

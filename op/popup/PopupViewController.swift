@@ -25,13 +25,9 @@ import Cocoa
 
 class PopupViewController: NSViewController {
     
-    
-    
     let padding: CGFloat = 2
     
-    var button1: NSButton!
-    var button2: NSButton!
-    var button3: NSButton!
+    var buttons: [NSButton]! = []
     
     override func loadView() {
         let view = NSView(frame: NSMakeRect(0,0,200,100))
@@ -44,76 +40,110 @@ class PopupViewController: NSViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do view setup here.
-        
-        button1 = NSButton(title: "ab", target: self, action: #selector(handleButton(_:)))
-        button1.translatesAutoresizingMaskIntoConstraints = false
-        button1.bezelStyle = NSButton.BezelStyle.smallSquare
-        view.addSubview(button1)
-
-        button2 = NSButton(title: "AB", target: self, action: #selector(handleButton(_:)))
-        button2.translatesAutoresizingMaskIntoConstraints = false
-        button2.bezelStyle = NSButton.BezelStyle.smallSquare
-        view.addSubview(button2)
-        
-//        button3 = NSButton(
-//            image: NSImage(
-//                systemSymbolName: "square.and.arrow.up",
-//                accessibilityDescription: ""
-//            )!,
-//            target: self,
-//            action: #selector(handleButton(_:)))
-        button3 = NSButton(title: "paste =", target: self, action: #selector(handleButton(_:)))
-        button3.translatesAutoresizingMaskIntoConstraints = false
-        button3.bezelStyle = NSButton.BezelStyle.smallSquare
-        view.addSubview(button3)
-        
-        constraintsInit()
-        
-        print("view did load")
+        // Do view setup here. (this is only called once; on app start)
     }
     
     override func viewWillAppear() {
         super.viewWillAppear()
         
-        print("view will appear")
+//        addButtonsToPopup()
+        
+        
+        // ---default buttons---
+        
+        // TODO: to retain order, must use dict in array instead of dict
+        
+        // reset buttons:
+        // 1. in var store
+        buttons = []
+        // 2. in subviews
+        view.subviews = []
+        
+        let defaultButtons: [String: PopupType] = [
+            "ab": .copyOrCopyPaste,
+            "AB": .copyOrCopyPaste,
+            "paste =": .paste,
+        ]
+        
+        print(data.popupType)
+        
+        var i = 0
+        let isNotPastePopup = data.popupType == .copyOrCopyPaste
+        let isPastePopup = !isNotPastePopup
+        for (title, popupType) in defaultButtons {
+            // if this is a paste popup, and the button is a paste button, add button, otherwise don't add button
+            if isNotPastePopup || isPastePopup && popupType == .paste {
+                buttons.append(NSButton(title: title, target: self, action: #selector(handleButton(_:))))
+                buttons[i].translatesAutoresizingMaskIntoConstraints = false
+                buttons[i].bezelStyle = NSButton.BezelStyle.smallSquare
+                view.addSubview(buttons[i])
+                i += 1
+            }
+        }
+        constraintsInit()
+    }
+    
+    override func viewDidAppear() {
+        
+        
+        // can't get dimensions of buttons only layout is computed, so we calculate window dimensions here
+        
+        
+        // --calculate window height and width--
         
         var windowWidth: CGFloat = 0
         var windowHeight: CGFloat = 0
-        
+
         // add left padding
         windowWidth += padding
         // add bottom padding
         windowHeight += padding
-        
-        let subviews = self.view.subviews
-        for view in subviews {
-            windowWidth += view.frame.width
+
+        let subviews = view.subviews
+        for subview in subviews {
+            windowWidth += subview.frame.width
             // add right padding
             windowWidth += padding
         }
-        
         windowHeight += subviews[0].frame.height
         // add top padding (not needed for some reason ???)
         // windowHeight += padding
-        
-        let prevFrame: NSRect = self.view.window!.frame
+
+        let prevFrame: NSRect = view.window!.frame
         let newWindowSize: NSRect = NSRect(x: prevFrame.minX, y: prevFrame.minY, width: windowWidth, height: windowHeight)
-        
-        self.view.window?.setFrame(newWindowSize, display: true)
-        
+
+        view.window?.setFrame(newWindowSize, display: true)
+
         // FIXME: when window first appears, it's centering relative to the cursor is off bc this function hasn't loaded yet to update the window size to be able to center based on window size
     }
     
     func constraintsInit() {
-        NSLayoutConstraint.activate([
-            button1.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            button1.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -padding),
-            button2.leadingAnchor.constraint(equalTo: button1.trailingAnchor, constant: padding),
-            button2.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -padding),
-            button3.leadingAnchor.constraint(equalTo: button2.trailingAnchor, constant: padding),
-            button3.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -padding),
+        
+        var constraintsArr: [NSLayoutConstraint] = []
+        
+        // initial anchor subview
+        constraintsArr.append(contentsOf: [
+            view.subviews[0].leadingAnchor.constraint(
+                equalTo: view.leadingAnchor, constant: padding),
+            view.subviews[0].bottomAnchor.constraint(
+                equalTo: view.bottomAnchor, constant: -padding),
         ])
+        // the rest of the subbiews (if present)
+        let numSubviews = view.subviews.count
+        if numSubviews > 1 {
+            let i = 1
+            for idx in i...(numSubviews - 1) {
+                print(idx)
+                constraintsArr.append(contentsOf: [
+                    view.subviews[idx].leadingAnchor.constraint(
+                        equalTo: view.subviews[idx - 1].trailingAnchor, constant: padding),
+                    view.subviews[idx].bottomAnchor.constraint(
+                        equalTo: view.bottomAnchor, constant: -padding),
+                ])
+            }
+        }
+        
+        NSLayoutConstraint.activate(constraintsArr)
     }
     
     @objc func handleButton(_ sender: NSButton) {
@@ -134,13 +164,13 @@ class PopupViewController: NSViewController {
         // perform action on text
         if  fn == "ab" {
             let newText = data.currentSelection.lowercased()
-            modifyTextInSelection(newText)
+            pasteString(newText)
         } else if fn == "AB" {
             let newText = data.currentSelection.uppercased()
-            modifyTextInSelection(newText)
+            pasteString(newText)
         } else if fn == "paste =" {
             let newText: String = NSPasteboard.general.string(forType: .string) ?? ""
-            modifyTextInSelection(newText)
+            pasteString(newText)
         }
         // reset current selection
         data.currentSelection = ""
@@ -149,16 +179,4 @@ class PopupViewController: NSViewController {
     }
 }
 
-func modifyTextInSelection(_ str: String) {
-    let selType = data.selectionAquisitionMethod
-    switch selType {
-    case "applescript":
-        setSelectionViaAppleScript(str: str)
-    case "ctrl-c":
-        cmdV(str: str)
-    default:
-        print("no selection aquisition method found")
-    }
-    // reset
-    data.selectionAquisitionMethod = ""
-}
+
