@@ -1,5 +1,5 @@
 //
-//  openPopWindow.swift
+//  hide-and-show-window.swift
 //  op
 //
 //  Created by nogira on 5/6/2022.
@@ -16,12 +16,12 @@ func showPopupWindow() {
 }
 
 func hidePopupWindow() {
+    
+    print("hide")
     let popupWindow: NSWindow? = NSApp.windows[1]
     if let window: NSWindow = popupWindow {
         window.orderOut(nil)
         // cancel auto-hide window worker, as window is already closed
-        if let viewController = window.contentViewController as? PopupViewController {
-            viewController.workItem.cancel()
-        }
+        workItem.cancel()
     }
 }

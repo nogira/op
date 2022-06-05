@@ -56,6 +56,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // store state of our status bar item so it stays in memory, and thus displays on status bar
     var statusBarItem: NSStatusItem!
 
+    private var monitor: Any?
     
     func applicationWillFinishLaunching(_ notification: Notification) {
 
@@ -65,9 +66,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Insert code here to initialize your application
         
         
+        
+        
         acquirePrivileges()
         
         
+        monitor = NSEvent.addGlobalMonitorForEvents(matching: .keyDown) { event in
+            print(event)
+        }
         
         
         

@@ -16,19 +16,17 @@ func getAllAXAttributeNames(_ elem: AXUIElement) -> CFArray {
 func getAXAttributeValue(_ elem: AXUIElement, attr: String) -> CFTypeRef? {
     var val: CFTypeRef?
     AXUIElementCopyAttributeValue(elem, attr as CFString, &val)
-    if val == nil {
-        print("val was nil")
-    }
     return val
 }
 
 func getAXElemFromChildrenOfAXElemByTitle(_ AXElem: AXUIElement, title: String) -> AXUIElement? {
     let AXElemChildren = getAXAttributeValue(AXElem, attr: "AXChildren") as! NSArray
     for elem in AXElemChildren {
-        let elemTitle = getAXAttributeValue(elem as! AXUIElement, attr: "AXTitle")
+        let elem = elem as! AXUIElement
+        let elemTitle = getAXAttributeValue(elem, attr: "AXTitle")
         // Edit
         if elemTitle as! String == title {
-            return elem as! AXUIElement
+            return elem
         }
     }
     return nil
@@ -40,22 +38,15 @@ func clickAXElemBtn(_ AXElem: AXUIElement) -> Void {
 
 func getCurrentWindowFrame() -> CGRect? {
     let systemWideElement: AXUIElement = AXUIElementCreateSystemWide()
-    let focusedElemRef = getAXAttributeValue(
-        systemWideElement, attr: "AXFocusedUIElement")
-    if focusedElemRef == nil {
-        return nil
+    if let focusedElemRef = getAXAttributeValue( systemWideElement, attr: "AXFocusedUIElement") {
+        let focusedElem = focusedElemRef as! AXUIElement
+        if let focusedWindowRef = getAXAttributeValue(focusedElem, attr: "AXWindow") {
+            let focusedWindow = focusedWindowRef as! AXUIElement
+            let focusedFrame: CFTypeRef? = getAXAttributeValue(focusedWindow, attr: "AXFrame")
+            var frameRect = CGRect()
+            AXValueGetValue(focusedFrame as! AXValue, AXValueType.cgRect, &frameRect)
+            return frameRect
+        }
     }
-    let focusedElem = focusedElemRef as! AXUIElement
-    
-    let focusedWindowRef = getAXAttributeValue(focusedElem, attr: "AXWindow")
-    if focusedWindowRef == nil {
-        return nil
-    }
-    let focusedWindow = focusedWindowRef as! AXUIElement
-
-    let focusedFrame: CFTypeRef? = getAXAttributeValue(focusedWindow, attr: "AXFrame")
-    var frameRect = CGRect()
-    AXValueGetValue(focusedFrame as! AXValue, AXValueType.cgRect, &frameRect)
-    
-    return frameRect
+    return nil
 }

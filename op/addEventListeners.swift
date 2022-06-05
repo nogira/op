@@ -17,9 +17,6 @@ import Cocoa
 // perhaps even dump accessibility in favor of this (?)
 
 func addEventListeners() {
-    // track length of drag
-    var startDragLocation: NSPoint!
-    
     // detect if window moved instead of text selected
     var startFocusedWindowFrame: CGRect!
     
@@ -45,11 +42,11 @@ func addEventListeners() {
                 startFocusedWindowFrame = frame
             }
             timeOfMouseDown = event.timestamp
-            startDragLocation = event.locationInWindow
+            data.mouseDownPosition = event.locationInWindow
             
             if event.clickCount == 2 || event.clickCount == 3 {
-                data.mouseDownPosition = startDragLocation
-                data.mouseUpPosition = startDragLocation
+                // since this is a mouse down event and window position relies on mouse up position, and mouse up position on double click is expected to be same position, we let mouse up position equal mouse down position
+                data.mouseUpPosition = event.locationInWindow
                 handleSelection()
             }
         }
@@ -60,7 +57,7 @@ func addEventListeners() {
             (event : NSEvent) -> Void in
             
             // confirm this is an actual drag event adn not a random key up with no prior key down
-            if startDragLocation != nil {
+            if data.mouseDownPosition != nil {
                 
                 // this `if-let-else` for endFocusedWindowFrame is need in case accessibilty privileges are not yet on
                 let endFocusedWindowFrame: CGRect
@@ -72,21 +69,16 @@ func addEventListeners() {
                 // if window hasn't moved or resized, event may be a text selection, so proceed with event handling
                 if startFocusedWindowFrame == endFocusedWindowFrame {
                     
-                    let currentLocation = event.locationInWindow
-                    let x0 = startDragLocation.x
-                    let y0 = startDragLocation.y
-                    let x1 = currentLocation.x
-                    let y1 = currentLocation.y
-                    // print(x0, y0, x1, y1)
+                    data.mouseUpPosition = event.locationInWindow
+                    let (x0, y0) = (data.mouseDownPosition.x, data.mouseDownPosition.y)
+                    let (x1, y1) = (data.mouseUpPosition.x, data.mouseUpPosition.y)
                     let x_diff = abs(x0 - x1)
                     let y_diff = abs(y0 - y1)
 
                     if x_diff > 5 || y_diff > 5 {
-                        data.mouseDownPosition = startDragLocation
-                        data.mouseUpPosition = currentLocation
                         handleSelection()
                     } else {
-                        // handle long press in same spot
+                        // --handle long press in same spot--
                         
                         let timeOfMouseUp = event.timestamp
                         let timeDiff = timeOfMouseUp - timeOfMouseDown
@@ -95,19 +87,13 @@ func addEventListeners() {
                             // FIXME: it is possible to select text then hold down button with selection remaining, so the paste will paste over the selection
                             // bug or feature ???
                             
-                            // TODO: paste popup instead of copy popup
-                            
-                            data.mouseDownPosition = startDragLocation
-                            data.mouseUpPosition = startDragLocation
-                            
                             data.popupType = .paste
                             showPopupWindow()
-                            
                         }
                     }
                 }
             }
-            startDragLocation = nil
+            data.mouseDownPosition = nil
         }
     )
     

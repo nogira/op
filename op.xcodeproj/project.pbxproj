@@ -14,7 +14,7 @@
 		F42C390E284C749400CF30DD /* menubar-action.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42C390D284C749400CF30DD /* menubar-action.swift */; };
 		F42C3911284C74B700CF30DD /* key-press.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42C3910284C74B700CF30DD /* key-press.swift */; };
 		F42C3913284C780B00CF30DD /* handlePaste.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42C3912284C780B00CF30DD /* handlePaste.swift */; };
-		F42C3916284C7C3E00CF30DD /* hide & show popup window.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42C3915284C7C3E00CF30DD /* hide & show popup window.swift */; };
+		F42C3916284C7C3E00CF30DD /* hide-and-show-window.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42C3915284C7C3E00CF30DD /* hide-and-show-window.swift */; };
 		F4682315284B4FB200AD3DBD /* copy-event.scpt in Resources */ = {isa = PBXBuildFile; fileRef = F4682314284B4FB100AD3DBD /* copy-event.scpt */; };
 		F47EF82F284499AB00DEB84B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47EF82E284499AB00DEB84B /* AppDelegate.swift */; };
 		F47EF831284499AB00DEB84B /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47EF830284499AB00DEB84B /* SettingsViewController.swift */; };
@@ -35,7 +35,7 @@
 		F42C390D284C749400CF30DD /* menubar-action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "menubar-action.swift"; sourceTree = "<group>"; };
 		F42C3910284C74B700CF30DD /* key-press.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "key-press.swift"; sourceTree = "<group>"; };
 		F42C3912284C780B00CF30DD /* handlePaste.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = handlePaste.swift; sourceTree = "<group>"; };
-		F42C3915284C7C3E00CF30DD /* hide & show popup window.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "hide & show popup window.swift"; sourceTree = "<group>"; };
+		F42C3915284C7C3E00CF30DD /* hide-and-show-window.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "hide-and-show-window.swift"; sourceTree = "<group>"; };
 		F4682314284B4FB100AD3DBD /* copy-event.scpt */ = {isa = PBXFileReference; lastKnownFileType = file; path = "copy-event.scpt"; sourceTree = "<group>"; };
 		F47EF82B284499AB00DEB84B /* op.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = op.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F47EF82E284499AB00DEB84B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -80,9 +80,18 @@
 			children = (
 				F47EF8822845015B00DEB84B /* PopupViewController.swift */,
 				F47EF87E2844F28200DEB84B /* PopupWindowController.swift */,
-				F42C3915284C7C3E00CF30DD /* hide & show popup window.swift */,
+				F42C3915284C7C3E00CF30DD /* hide-and-show-window.swift */,
 			);
 			path = popup;
+			sourceTree = "<group>";
+		};
+		F42C3917284CC94E00CF30DD /* settings */ = {
+			isa = PBXGroup;
+			children = (
+				F47EF830284499AB00DEB84B /* SettingsViewController.swift */,
+				F47EF85E2844E1F900DEB84B /* SettingsWindowController.swift */,
+			);
+			path = settings;
 			sourceTree = "<group>";
 		};
 		F47EF822284499AB00DEB84B = {
@@ -112,11 +121,10 @@
 				F405983C284C3F2F00611569 /* accessibility.swift */,
 				F42C390F284C74A000CF30DD /* selection & paste */,
 				F42C3914284C7C0700CF30DD /* popup */,
-				F47EF85E2844E1F900DEB84B /* SettingsWindowController.swift */,
-				F47EF830284499AB00DEB84B /* SettingsViewController.swift */,
+				F42C3917284CC94E00CF30DD /* settings */,
+				F47EF8C02847146800DEB84B /* StatusBar.swift */,
 				F47EF832284499AD00DEB84B /* Assets.xcassets */,
 				F47EF837284499AD00DEB84B /* op.entitlements */,
-				F47EF8C02847146800DEB84B /* StatusBar.swift */,
 			);
 			path = op;
 			sourceTree = "<group>";
@@ -200,7 +208,7 @@
 				F47EF8BF284711AF00DEB84B /* main.swift in Sources */,
 				F42C390C284C616F00CF30DD /* handleSelection.swift in Sources */,
 				F47EF8C32847AEA700DEB84B /* addEventListeners.swift in Sources */,
-				F42C3916284C7C3E00CF30DD /* hide & show popup window.swift in Sources */,
+				F42C3916284C7C3E00CF30DD /* hide-and-show-window.swift in Sources */,
 				F47EF85F2844E1F900DEB84B /* SettingsWindowController.swift in Sources */,
 				F47EF8802844F28200DEB84B /* PopupWindowController.swift in Sources */,
 				F42C390E284C749400CF30DD /* menubar-action.swift in Sources */,
@@ -332,11 +340,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = op/op.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = NL8TL69632;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = op/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -360,11 +369,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = op/op.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = NL8TL69632;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = op/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";

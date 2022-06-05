@@ -21,7 +21,8 @@ JSON:
 */
 
 import Cocoa
-//import AppleScriptObjC
+
+var workItem = DispatchWorkItem { hidePopupWindow() }
 
 class PopupViewController: NSViewController {
     
@@ -30,7 +31,7 @@ class PopupViewController: NSViewController {
     var buttons: [NSButton]! = []
     
     // the work item to hide popup window (gets called after 3 sec of window being visible)
-    let workItem = DispatchWorkItem { hidePopupWindow() }
+    
     
     override func loadView() {
         let view = NSView(frame: NSMakeRect(0,0,200,100))
@@ -125,10 +126,14 @@ class PopupViewController: NSViewController {
         
         
         
+        // FIXME: this workItem never gets executed
         
+        print("run auto-hide")
         
         // remove window after 5 seconds. this is cancelable (the cancellation will get called when hidePopupWindow is called)
         DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: workItem)
+        
+        workItem.isCancelled
     }
     
     func constraintsInit() {
