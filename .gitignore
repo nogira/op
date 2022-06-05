@@ -1,4 +1,4 @@
-*.DS_Store
+.DS_Store
 
 
 # Xcode (https://stackoverflow.com/questions/21178991/how-to-scrub-personal-information-from-an-xcode-project)
