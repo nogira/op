@@ -1,3 +1,13 @@
+
+# Xcode (https://stackoverflow.com/questions/21178991/how-to-scrub-personal-information-from-an-xcode-project)
+
+# these both found in .xcodeproj
+xcuserdata
+*.xcworkspace
+
+
+# ----------------------default github swift template below----------------------
+
 # Xcode
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
