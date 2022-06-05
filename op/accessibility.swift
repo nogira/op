@@ -38,7 +38,6 @@ func clickAXElemBtn(_ AXElem: AXUIElement) -> Void {
     AXUIElementPerformAction(AXElem, "AXPress" as CFString)
 }
 
-
 func getCurrentWindowFrame() -> CGRect? {
     let systemWideElement: AXUIElement = AXUIElementCreateSystemWide()
     let focusedElemRef = getAXAttributeValue(
