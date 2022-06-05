@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import Cocoa
 
 // TODO: remove popup on keypress
 // also when mouse moves too far away
@@ -30,25 +31,26 @@ func addEventListeners() {
         handler: {
             (event : NSEvent) -> Void in
             
+            // MARK: - hide popup
+            
+            // hide popup on click. if this is a new selection event, it will reappear
+            hidePopupWindow()
+            
+            // MARK: - handle selection
+            
             // add currently focused app  so can refocus after loses focus from clicking popup window
             data.prevFocusedApp = NSWorkspace.shared.frontmostApplication!
             
             if let frame = getCurrentWindowFrame() {
                 startFocusedWindowFrame = frame
             }
-            
             timeOfMouseDown = event.timestamp
-            
-            // hide popup on click. if double click or drag it will reappear
-            let popupWindow: NSWindow? = NSApp.windows[1]
-            if let window: NSWindow = popupWindow {
-                window.orderOut(nil)
-            }
-            
             startDragLocation = event.locationInWindow
             
             if event.clickCount == 2 || event.clickCount == 3 {
-                handleSelection(startPos: startDragLocation, endPos: startDragLocation!)
+                data.mouseDownPosition = startDragLocation
+                data.mouseUpPosition = startDragLocation
+                handleSelection()
             }
         }
     )
@@ -80,7 +82,9 @@ func addEventListeners() {
                     let y_diff = abs(y0 - y1)
 
                     if x_diff > 5 || y_diff > 5 {
-                        handleSelection(startPos: startDragLocation, endPos: currentLocation)
+                        data.mouseDownPosition = startDragLocation
+                        data.mouseUpPosition = currentLocation
+                        handleSelection()
                     } else {
                         // handle long press in same spot
                         
@@ -93,14 +97,33 @@ func addEventListeners() {
                             
                             // TODO: paste popup instead of copy popup
                             
+                            data.mouseDownPosition = startDragLocation
+                            data.mouseUpPosition = startDragLocation
+                            
                             data.popupType = .paste
-                            openPopWindow(startPos: startDragLocation, endPos: currentLocation)
+                            showPopupWindow()
                             
                         }
                     }
                 }
             }
             startDragLocation = nil
+        }
+    )
+    
+    // FIXME: not executing on keydow for some reason !!!
+    
+    NSEvent.addGlobalMonitorForEvents(
+        matching: .keyDown,
+        handler: {
+            (event : NSEvent) -> Void in
+            
+            // MARK: - hide popup
+            
+            print("keydown")
+    
+            // hide popup on key press
+            hidePopupWindow()
         }
     )
 }

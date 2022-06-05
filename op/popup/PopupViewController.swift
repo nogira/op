@@ -29,6 +29,9 @@ class PopupViewController: NSViewController {
     
     var buttons: [NSButton]! = []
     
+    // the work item to hide popup window (gets called after 3 sec of window being visible)
+    let workItem = DispatchWorkItem { hidePopupWindow() }
+    
     override func loadView() {
         let view = NSView(frame: NSMakeRect(0,0,200,100))
 //        view.wantsLayer = true
@@ -41,6 +44,8 @@ class PopupViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here. (this is only called once; on app start)
+        
+        addEventListeners()
     }
     
     override func viewWillAppear() {
@@ -51,7 +56,7 @@ class PopupViewController: NSViewController {
         
         // ---default buttons---
         
-        // TODO: to retain order, must use dict in array instead of dict
+        // TODO: to retain order, must use dict in array instead of dict. seems dict give completely random order
         
         // reset buttons:
         // 1. in var store
@@ -65,14 +70,15 @@ class PopupViewController: NSViewController {
             "paste =": .paste,
         ]
         
-        print(data.popupType)
-        
         var i = 0
-        let isNotPastePopup = data.popupType == .copyOrCopyPaste
-        let isPastePopup = !isNotPastePopup
+        let isPastePopup = data.popupType == .paste
+        let isNotPastePopup = !isPastePopup
         for (title, popupType) in defaultButtons {
-            // if this is a paste popup, and the button is a paste button, add button, otherwise don't add button
-            if isNotPastePopup || isPastePopup && popupType == .paste {
+            // 1. if this is not a paste popup, free to add every button
+            if isNotPastePopup ||
+                // 2. if this is a paste popup, and the button is a paste button, add button, otherwise don't add button
+                isPastePopup && popupType == .paste {
+                
                 buttons.append(NSButton(title: title, target: self, action: #selector(handleButton(_:))))
                 buttons[i].translatesAutoresizingMaskIntoConstraints = false
                 buttons[i].bezelStyle = NSButton.BezelStyle.smallSquare
@@ -85,9 +91,7 @@ class PopupViewController: NSViewController {
     
     override func viewDidAppear() {
         
-        
-        // can't get dimensions of buttons only layout is computed, so we calculate window dimensions here
-        
+        // CAN'T GET DIMENSIONS OF BUTTONS ONLY LAYOUT IS COMPUTED, SO WE CALCULATE WINDOW DIMENSIONS HERE
         
         // --calculate window height and width--
         
@@ -108,13 +112,23 @@ class PopupViewController: NSViewController {
         windowHeight += subviews[0].frame.height
         // add top padding (not needed for some reason ???)
         // windowHeight += padding
+        
+    
+        let (xPos, yPos) = calculateWindowPosition(windowWidth, windowHeight)
 
-        let prevFrame: NSRect = view.window!.frame
-        let newWindowSize: NSRect = NSRect(x: prevFrame.minX, y: prevFrame.minY, width: windowWidth, height: windowHeight)
+        let newWindowFrame = NSRect(x: xPos, y: yPos, width: windowWidth, height: windowHeight)
 
-        view.window?.setFrame(newWindowSize, display: true)
+        let window = view.window!
+        window.setFrame(newWindowFrame, display: true)
 
         // FIXME: when window first appears, it's centering relative to the cursor is off bc this function hasn't loaded yet to update the window size to be able to center based on window size
+        
+        
+        
+        
+        
+        // remove window after 5 seconds. this is cancelable (the cancellation will get called when hidePopupWindow is called)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: workItem)
     }
     
     func constraintsInit() {
@@ -179,4 +193,32 @@ class PopupViewController: NSViewController {
     }
 }
 
+func calculateWindowPosition(_ windowWidth: CGFloat, _ windowHeight: CGFloat
+    ) -> (CGFloat, CGFloat) {
+//            let startPos: NSPoint = data.mouseDownPosition
+    let endPos: NSPoint = data.mouseUpPosition
+    
+    let screen = NSScreen.main!
+    let rect = screen.frame
+    let screenHeight = rect.size.height
+    let screenWidth = rect.size.width
+    
+    var xPos = endPos.x - (windowWidth / 2)
+    var yPos = endPos.y + (windowHeight * 0.5)
+    
+    // fix window getting cut off if on edge of screen
+    
+    if xPos + windowWidth > screenWidth {
+        xPos = screenWidth - windowWidth
+    } else if xPos < 0 {
+        xPos = 0
+    }
 
+    if yPos + windowHeight > screenHeight {
+        yPos = screenHeight - windowHeight
+    } else if yPos < windowHeight {
+        yPos = 0
+    }
+    
+    return (xPos, yPos)
+}

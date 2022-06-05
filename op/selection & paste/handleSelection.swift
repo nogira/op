@@ -13,7 +13,7 @@ enum AXCopyResult {
     case copyFailed
 }
 
-func handleSelection(startPos: NSPoint, endPos: NSPoint) {
+func handleSelection() {
     let pasteboard: NSPasteboard = NSPasteboard.general
     let prevPasteboard: String = pasteboard.string(forType: .string) ?? ""
     print("prev: \(prevPasteboard)")
@@ -47,13 +47,14 @@ func handleSelection(startPos: NSPoint, endPos: NSPoint) {
                 pasteboard.clearContents()
                 pasteboard.setString(prevPasteboard, forType: .string)
                 
-                openPopWindow(startPos: startPos, endPos: endPos)
+                showPopupWindow()
             }
         } else if result == .copyFailed { // i.e. app has no copy button, so have to use cmd-c
             // tap cmd-c
             tapCmdAndKey("c")
             
             // 0.05s delay to wait for copy event:
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
                 let selection = pasteboard.string(forType: .string) ?? ""
                 // reset clipboard
@@ -65,7 +66,7 @@ func handleSelection(startPos: NSPoint, endPos: NSPoint) {
                     print(selection)
                     data.selectionMethod = .keyPress
                     data.currentSelection = selection
-                    openPopWindow(startPos: startPos, endPos: endPos)
+                    showPopupWindow()
                 }
             }
         } else { // .copyDisabled , so not able to copy

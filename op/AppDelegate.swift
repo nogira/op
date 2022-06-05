@@ -36,7 +36,8 @@ struct Data {
     var popupType: PopupType = .copyOrCopyPaste
     var selectionMethod: SelectionMethod = .accessibility
     var prevFocusedApp: NSRunningApplication! = nil
-    var accessibilityFocusedElement: AnyObject! = nil
+    var mouseDownPosition: NSPoint! = nil
+    var mouseUpPosition: NSPoint! = nil
 }
 
 var data = Data()
@@ -66,7 +67,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         acquirePrivileges()
         
-        addEventListeners()
+        
         
         
         
