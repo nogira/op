@@ -69,7 +69,6 @@ func addEventListeners() {
                     return
                 }
                 // if window hasn't moved or resized, event may be a text selection, so proceed with event handling
-                print(startFocusedWindowFrame, endFocusedWindowFrame)
                 if startFocusedWindowFrame == endFocusedWindowFrame {
                     
                     data.mouseUpPosition = event.locationInWindow
@@ -77,8 +76,6 @@ func addEventListeners() {
                     let (x1, y1) = (data.mouseUpPosition.x, data.mouseUpPosition.y)
                     let xDiff = abs(x0 - x1)
                     let yDiff = abs(y0 - y1)
-
-                    print(xDiff, yDiff)
                     
                     if xDiff > 5 || yDiff > 5 {
                         handleSelection()
@@ -88,7 +85,6 @@ func addEventListeners() {
                         let timeOfMouseUp = event.timestamp
                         let timeDiff = timeOfMouseUp - timeOfMouseDown
                         if timeDiff > 0.40 {
-                            print("this is long press")
                             // FIXME: it is possible to select text then hold down button with selection remaining, so the paste will paste over the selection
                             // bug or feature ???
                             

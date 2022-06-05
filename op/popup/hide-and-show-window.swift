@@ -23,6 +23,8 @@ func hidePopupWindow() {
             print("hide-window")
             window.orderOut(nil)
             
+            // FIXME: fix !!!
+            
             // cancel auto-hide window worker, as window is already closed
             workItem.cancel()
         }

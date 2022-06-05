@@ -28,13 +28,13 @@ func createStatusBarItem() -> NSStatusItem {
     statusBarItem.menu = statusBarMenu
     // add each menu item
     statusBarMenu.addItem(
-        withTitle: "show",
-        action: #selector(AppDelegate.show),
+        withTitle: "settings",
+        action: #selector(AppDelegate.settings),
         keyEquivalent: "")
 
     statusBarMenu.addItem(
-        withTitle: "hide",
-        action: #selector(AppDelegate.hide),
+        withTitle: "plugin folder",
+        action: #selector(AppDelegate.openFolder),
         keyEquivalent: "")
 
     statusBarMenu.addItem(

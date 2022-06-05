@@ -42,7 +42,6 @@ struct Data {
 
 var data = Data()
 
-//@main
 class AppDelegate: NSObject, NSApplicationDelegate {
 
 //    lazy var settingsWindowController = SettingsWindowController()
@@ -52,11 +51,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var popupWindow: NSWindow?
     var popupViewController: PopupViewController?
     
-    
     // store state of our status bar item so it stays in memory, and thus displays on status bar
     var statusBarItem: NSStatusItem!
-
-    private var monitor: Any?
+    
     
     func applicationWillFinishLaunching(_ notification: Notification) {
 
@@ -65,59 +62,55 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
         
-        
-        
-        
+
         acquirePrivileges()
         
         
-        monitor = NSEvent.addGlobalMonitorForEvents(matching: .keyDown) { event in
-            print(event)
+        // create application support folder if not already
+        let path: URL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+        let baseFolder: URL =  path.appendingPathComponent("nogira.op")
+        let pluginsFolder: URL = baseFolder.appendingPathComponent("plugins")
+        do {
+            try FileManager.default.createDirectory(
+                at: baseFolder, withIntermediateDirectories: true)
+            try FileManager.default.createDirectory(
+                at: pluginsFolder, withIntermediateDirectories: true)
+        } catch {
+            print(error)
         }
-        
         
         
         // create settings window
         (settingsWindow, settingsViewController) = createSettingsWindow()
-//        // show window
-//        settingsWindow!.makeKeyAndOrderFront(nil)
-        
-        
+
         // create popup window
         (popupWindow, popupViewController) = createPopupWindow()
-//        // show window
-//        popupWindow!.makeKeyAndOrderFront(nil)
-        
-        
+
         
         // create status bar item
         statusBarItem = createStatusBarItem()
-        
-        
-        //        // for NSServices to work
-        //        NSApp.servicesProvider = self
     }
     
-//    @objc func handleTextSelection(_ pboard: NSPasteboard, userData: String, error: NSErrorPointer) {
-//        if let str = pboard.string(forType: NSPasteboard.PasteboardType.string) {
-//                //your logic goes here
-//            print(str)
-//       }
-//    }
-    
-    @objc func show() {
-        print("show")
+    @objc func settings() {
+        print("show/hide")
         if let window: NSWindow = settingsWindow {
-            window.orderFront(self)
+            if window.isVisible {
+                window.orderOut(self)
+            } else {
+                window.orderFront(self)
+                // send window to front / focus the window
+                NSApp.activate(ignoringOtherApps: true)
+            }
         }
-        // send window to front / focus the window
-        NSApp.activate(ignoringOtherApps: true)
     }
-    @objc func hide() {
-        print("hide")
-        if let window: NSWindow = settingsWindow {
-            window.orderOut(self)
-        }
+    @objc func openFolder() {
+        print("open folder")
+        let path: URL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+        let baseFolder: URL =  path.appendingPathComponent("nogira.op")
+        let pluginsFolder: URL = baseFolder.appendingPathComponent("plugins")
+
+        NSWorkspace.shared.selectFile(
+            nil, inFileViewerRootedAtPath: pluginsFolder.absoluteString)
     }
     @objc func quit() {
         print("quit")

@@ -13,6 +13,9 @@ enum AXCopyResult {
     case copyFailed
 }
 
+// TODO: have a whitelist/blacklist for apps so e.g. if you don't want it on in photoshop it doesnt need to be
+// TODO: that gives me an idea. what if it could edit files in the pasteboard, so e.g. you copy an image and paste as black and white, and of course it only appear when an image is in clipboard
+
 func handleSelection() {
     let pasteboard: NSPasteboard = NSPasteboard.general
     let prevPasteboard: String = pasteboard.string(forType: .string) ?? ""
@@ -20,13 +23,58 @@ func handleSelection() {
 
     data.popupType = .copyOrCopyPaste
     
+    
      // must delay key press to allow selection event to occur prior to the copy.
      // usleep freezes event loop so cant use. must use DispatchQueue instead
      // 0.10s delay for selection event:
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.10) {
         
+        
+        // --------------HANDLE SPECIAL CASES---------------
+        
+        if let bundleID = data.prevFocusedApp.bundleIdentifier {
+            print(bundleID)
+            if bundleID == "com.apple.finder" {
+                if let focusedElem = getFocusedElem() {
+                    if let focusedElemIdentifierRef = getAXAttributeValue(
+                        focusedElem, attr: "AXIdentifier") {
+                        
+                        let focusedElemIdentifier = focusedElemIdentifierRef as! String
+                        print(focusedElemIdentifier)
+                        
+                        var continueWithSelection: Bool!
+                        
+                        switch focusedElemIdentifier {
+                        // IF ANY OF THESE, IT IS SAFE TO COPY, IF NOT RETURN
+                            // if its the search bar
+                        case "_NS:123",
+                            // if its a folder renaming text-box
+                            "ShrinkToFit Text Field",
+                            // if its a the "Help" search bar
+                            "_SC_SEARCH_FIELD",
+                            // go -> go to folder
+                            "PathTextField",
+                            // go -> connect to server
+                            "_NS:154":
+                            
+                            continueWithSelection = true
+                        default:
+                            continueWithSelection = false
+                        }
+                        if continueWithSelection == false {
+                            return
+                        }
+                    }
+                }
+            }
+        }
+        
+        
+
         let result: AXCopyResult = copyViaAX()
         // applescript can do the same thing but much slower so no point using it
+        
+        print(result)
         
         // still need ctrl-c as backup for janky apps like anki with no edit menu
         

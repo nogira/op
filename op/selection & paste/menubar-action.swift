@@ -30,33 +30,36 @@ func copyViaAX() -> AXCopyResult {
     // FIXME: handle cases where edit submenu not present
     
     if let editSubmenu: AXUIElement = getEditSubmenuViaAX() {
-        let copyBtn = getAXElemFromChildrenOfAXElemByTitle(editSubmenu, title: "Copy")!
-        let copyBtnEnabled = getAXAttributeValue(copyBtn, attr: "AXEnabled") as! Bool
-        
-        if copyBtnEnabled {
-            let copyBtnChildrenArr = getAXAttributeValue(copyBtn, attr: "AXChildren") as! NSArray
-
-            if copyBtnChildrenArr.count == 0 {
-    //            print("no nested copy button")
-                clickAXElemBtn(copyBtn)
-                return .copySuccess
-            } else {
-    //            print("yes nested copy button")
-                let copyBtnSubmenu = copyBtnChildrenArr[0] as! AXUIElement
-                let realCopyBtn = getAXElemFromChildrenOfAXElemByTitle(
-                    copyBtnSubmenu,
-                    title: "Copy")!
-                let realCopyBtnEnabled = getAXAttributeValue(realCopyBtn, attr: "AXEnabled") as! Bool
-                
-                if realCopyBtnEnabled {
-                    clickAXElemBtn(realCopyBtn)
+        if let copyBtn = getAXElemFromChildrenOfAXElemByTitle(editSubmenu, title: "Copy", cmdChar: "C") {
+//            print("FOUND COPY BUTTON")
+//            print(getAllAXAttributeNames(copyBtn))
+//            print(getAXAttributeValue(copyBtn, attr: "AXMenuItemCmdChar")) // -> "C"
+            let copyBtnEnabled = getAXAttributeValue(
+                copyBtn, attr: "AXEnabled") as! Bool
+            if copyBtnEnabled {
+                let copyBtnChildrenArr = getAXAttributeValue(
+                    copyBtn, attr: "AXChildren") as! NSArray
+                if copyBtnChildrenArr.count == 0 {
+                    clickAXElemBtn(copyBtn)
                     return .copySuccess
                 } else {
-                    return .copyDisabled
+                    let copyBtnSubmenu = copyBtnChildrenArr[0] as! AXUIElement
+                    if let realCopyBtn = getAXElemFromChildrenOfAXElemByTitle(
+                        copyBtnSubmenu, title: "Copy", cmdChar: "C") {
+                        
+                        let realCopyBtnEnabled = getAXAttributeValue(
+                            realCopyBtn, attr: "AXEnabled") as! Bool
+                        if realCopyBtnEnabled {
+                            clickAXElemBtn(realCopyBtn)
+                            return .copySuccess
+                        } else {
+                            return .copyDisabled
+                        }
+                    }
                 }
+            } else {
+                return .copyDisabled
             }
-        } else {
-            return .copyDisabled
         }
     }
     return .copyFailed
@@ -64,23 +67,28 @@ func copyViaAX() -> AXCopyResult {
 
 func pasteViaAX() {
     if let editSubmenu: AXUIElement = getEditSubmenuViaAX() {
-        let copyBtn = getAXElemFromChildrenOfAXElemByTitle(editSubmenu, title: "Paste")!
-        let copyBtnEnabled = getAXAttributeValue(copyBtn, attr: "AXEnabled") as! Bool
-        
-        if copyBtnEnabled {
-            let copyBtnChildrenArr = getAXAttributeValue(copyBtn, attr: "AXChildren") as! NSArray
+        if let pasteBtn = getAXElemFromChildrenOfAXElemByTitle(
+            editSubmenu, title: "Paste", cmdChar: "V") {
+            
+            let pasteBtnEnabled = getAXAttributeValue(
+                pasteBtn, attr: "AXEnabled") as! Bool
+            if pasteBtnEnabled {
+                let pasteBtnChildrenArr = getAXAttributeValue(
+                    pasteBtn, attr: "AXChildren") as! NSArray
 
-            if copyBtnChildrenArr.count == 0 {
-                clickAXElemBtn(copyBtn)
-            } else {
-                let copyBtnSubmenu = copyBtnChildrenArr[0] as! AXUIElement
-                let realCopyBtn = getAXElemFromChildrenOfAXElemByTitle(
-                    copyBtnSubmenu,
-                    title: "Paste")!
-                let realCopyBtnEnabled = getAXAttributeValue(realCopyBtn, attr: "AXEnabled") as! Bool
-                
-                if realCopyBtnEnabled {
-                    clickAXElemBtn(realCopyBtn)
+                if pasteBtnChildrenArr.count == 0 {
+                    clickAXElemBtn(pasteBtn)
+                } else {
+                    let pasteBtnSubmenu = pasteBtnChildrenArr[0] as! AXUIElement
+                    if let realPasteBtn = getAXElemFromChildrenOfAXElemByTitle(
+                        pasteBtnSubmenu, title: "Paste", cmdChar: "V") {
+                        
+                        let realPasteBtnEnabled = getAXAttributeValue(
+                            realPasteBtn, attr: "AXEnabled") as! Bool
+                        if realPasteBtnEnabled {
+                            clickAXElemBtn(realPasteBtn)
+                        }
+                    }
                 }
             }
         }

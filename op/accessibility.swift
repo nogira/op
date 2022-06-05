@@ -18,18 +18,36 @@ func getAXAttributeValue(_ elem: AXUIElement, attr: String) -> CFTypeRef? {
     AXUIElementCopyAttributeValue(elem, attr as CFString, &val)
     return val
 }
-
-func getAXElemFromChildrenOfAXElemByTitle(_ AXElem: AXUIElement, title: String) -> AXUIElement? {
-    let AXElemChildren = getAXAttributeValue(AXElem, attr: "AXChildren") as! NSArray
-    for elem in AXElemChildren {
-        let elem = elem as! AXUIElement
-        let elemTitle = getAXAttributeValue(elem, attr: "AXTitle")
-        // Edit
-        if elemTitle as! String == title {
-            return elem
+/**
+ cmdChar is the char used with cmd as a shortcut to the menu item, e.g. use "C" (capital) for cmd-c
+ */
+func getAXElemFromChildrenOfAXElemByTitle(_ AXElem: AXUIElement, title: String, cmdChar: String = "") -> AXUIElement? {
+//    do {
+//        let regex = try NSRegularExpression(pattern: title)
+        let AXElemChildren = getAXAttributeValue(AXElem, attr: "AXChildren") as! NSArray
+        for elem in AXElemChildren {
+            let elem = elem as! AXUIElement
+            let elemTitle = getAXAttributeValue(elem, attr: "AXTitle") as! String
+            // Edit
+//            let range = NSRange(location: 0, length: elemTitle.utf16.count)
+//            let titleMatches = regex.firstMatch(in: elemTitle, range: range) != nil
+//            if titleMatches {
+            if elemTitle == title {
+                return elem
+            }
         }
-    }
-    return nil
+        // using a new loop instead of using same loop bc its very unlikely will need to use this loop. only one i've found is the finder app
+        for elem in AXElemChildren {
+            let elem = elem as! AXUIElement
+            if let elemCmdCharRef = getAXAttributeValue(elem, attr: "AXMenuItemCmdChar") {
+                let elemCmdChar = elemCmdCharRef as! String
+                if elemCmdChar == cmdChar {
+                    return elem
+                }
+            }
+        }
+        return nil
+//    } catch { return nil } // this should never catch bc regex always same
 }
 
 func clickAXElemBtn(_ AXElem: AXUIElement) -> Void {
@@ -49,10 +67,17 @@ func getParentAXElem(_ AXElem: AXUIElement) -> AXUIElement? {
     return nil
 }
 
-func getCurrentWindowFrame() -> CGRect? {
+func getFocusedElem() -> AXUIElement? {
     let systemWideElement: AXUIElement = AXUIElementCreateSystemWide()
-    if let focusedElemRef = getAXAttributeValue( systemWideElement, attr: "AXFocusedUIElement") {
+    if let focusedElemRef = getAXAttributeValue(systemWideElement, attr: "AXFocusedUIElement") {
         let focusedElem = focusedElemRef as! AXUIElement
+        return focusedElem
+    }
+    return nil
+}
+
+func getCurrentWindowFrame() -> CGRect? {
+    if let focusedElem = getFocusedElem() {
         if let focusedWindowRef = getAXAttributeValue(focusedElem, attr: "AXWindow") {
             let focusedWindow = focusedWindowRef as! AXUIElement
             let focusedFrame: CFTypeRef? = getAXAttributeValue(focusedWindow, attr: "AXFrame")
