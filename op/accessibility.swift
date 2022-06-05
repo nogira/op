@@ -36,6 +36,19 @@ func clickAXElemBtn(_ AXElem: AXUIElement) -> Void {
     AXUIElementPerformAction(AXElem, "AXPress" as CFString)
 }
 
+func getParentAXElem(_ AXElem: AXUIElement) -> AXUIElement? {
+    if let parentRef = getAXAttributeValue(AXElem, attr: "AXParent") {
+        let parent = parentRef as! AXUIElement
+        let parentRole = getAXAttributeValue(parent, attr: "AXRole") as! String
+        if parentRole == "AXWindow" {
+            return parent
+        } else {
+            return getParentAXElem(parent)
+        }
+    }
+    return nil
+}
+
 func getCurrentWindowFrame() -> CGRect? {
     let systemWideElement: AXUIElement = AXUIElementCreateSystemWide()
     if let focusedElemRef = getAXAttributeValue( systemWideElement, attr: "AXFocusedUIElement") {
@@ -46,6 +59,14 @@ func getCurrentWindowFrame() -> CGRect? {
             var frameRect = CGRect()
             AXValueGetValue(focusedFrame as! AXValue, AXValueType.cgRect, &frameRect)
             return frameRect
+        } else {
+            // in QtGUI apps like anki, focused elements don't contain "AXWindow" values. a solution is to instead just keep getting "AXParent" until you find an element with an "AXRole" value of "AXWindow"
+            if let focusedWindow = getParentAXElem(focusedElem) {
+                let focusedFrame: CFTypeRef? = getAXAttributeValue(focusedWindow, attr: "AXFrame")
+                var frameRect = CGRect()
+                AXValueGetValue(focusedFrame as! AXValue, AXValueType.cgRect, &frameRect)
+                return frameRect
+            }
         }
     }
     return nil

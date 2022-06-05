@@ -28,6 +28,8 @@ func addEventListeners() {
         handler: {
             (event : NSEvent) -> Void in
             
+            print("mousedown")
+            
             // MARK: - hide popup
             
             // hide popup on click. if this is a new selection event, it will reappear
@@ -67,15 +69,18 @@ func addEventListeners() {
                     return
                 }
                 // if window hasn't moved or resized, event may be a text selection, so proceed with event handling
+                print(startFocusedWindowFrame, endFocusedWindowFrame)
                 if startFocusedWindowFrame == endFocusedWindowFrame {
                     
                     data.mouseUpPosition = event.locationInWindow
                     let (x0, y0) = (data.mouseDownPosition.x, data.mouseDownPosition.y)
                     let (x1, y1) = (data.mouseUpPosition.x, data.mouseUpPosition.y)
-                    let x_diff = abs(x0 - x1)
-                    let y_diff = abs(y0 - y1)
+                    let xDiff = abs(x0 - x1)
+                    let yDiff = abs(y0 - y1)
 
-                    if x_diff > 5 || y_diff > 5 {
+                    print(xDiff, yDiff)
+                    
+                    if xDiff > 5 || yDiff > 5 {
                         handleSelection()
                     } else {
                         // --handle long press in same spot--

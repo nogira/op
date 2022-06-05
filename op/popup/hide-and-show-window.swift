@@ -16,12 +16,15 @@ func showPopupWindow() {
 }
 
 func hidePopupWindow() {
-    
-    print("hide")
+    print("the-hide-func")
     let popupWindow: NSWindow? = NSApp.windows[1]
     if let window: NSWindow = popupWindow {
-        window.orderOut(nil)
-        // cancel auto-hide window worker, as window is already closed
-        workItem.cancel()
+        if window.isVisible {
+            print("hide-window")
+            window.orderOut(nil)
+            
+            // cancel auto-hide window worker, as window is already closed
+            workItem.cancel()
+        }
     }
 }
