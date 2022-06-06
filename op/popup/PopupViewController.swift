@@ -47,7 +47,7 @@ class PopupViewController: NSViewController {
         super.viewDidLoad()
         // Do view setup here. (this is only called once; on app start)
         
-        workItem = DispatchWorkItem { self.hide() }
+        
         
         addEventListeners(self)
         
@@ -103,14 +103,10 @@ class PopupViewController: NSViewController {
         setPopupWindowFrame(view, padding)
 
         
-        // FIXME: this workItem never gets executed
-        
-        print("run auto-hide")
-        
         // remove window after 5 seconds. this is cancelable (the cancellation will get called when hidePopupWindow is called)
+        workItem = DispatchWorkItem { self.hide() }
         if let workItem = workItem {
             DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: workItem)
-            print(workItem.isCancelled)
         }
     }
     
