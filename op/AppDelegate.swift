@@ -62,9 +62,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
         
-
         acquirePrivileges()
-        
         
         // create application support folder if not already
         let path: URL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
@@ -79,14 +77,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             print(error)
         }
         
-        
         // create settings window
         (settingsWindow, settingsViewController) = createSettingsWindow()
 
         // create popup window
         (popupWindow, popupViewController) = createPopupWindow()
 
-        
         // create status bar item
         statusBarItem = createStatusBarItem()
     }
@@ -126,45 +122,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 }
 
-func createSettingsWindow() -> (NSWindow, SettingsViewController) {
-    let settingsWindow: NSWindow! = NSWindow(
-        contentRect: NSMakeRect(0, 0, 300, 300),
-        styleMask: [.miniaturizable, .closable, .resizable, .titled],
-        backing: .buffered,
-        defer: false
-    )
-    // center the window on screen
-    settingsWindow.center()
-    settingsWindow?.title = "Settings"
-    // always open window in the active space rather than the first space it opened in
-    // space is another word for desktop (e.g. i have fullscreen safari on one desktop and xcode on another desktop)
-    settingsWindow?.collectionBehavior = NSWindow.CollectionBehavior.moveToActiveSpace
-    let settingsViewController: SettingsViewController! = SettingsViewController()
-    let settingsContent = settingsWindow!.contentView! as NSView
-    let settingsView = settingsViewController!.view
-    settingsContent.addSubview(settingsView)
-    
-    return (settingsWindow, settingsViewController)
-}
-
-func createPopupWindow() -> (NSWindow, PopupViewController) {
-    let popupWindow: NSWindow! = NSWindow( // 10, 1000, 200, 20
-        contentRect: NSMakeRect(10, 800, 94, 24),
-        styleMask: .unifiedTitleAndToolbar,
-        backing: .buffered,
-        defer: false
-    )
-    // always open window in the active space rather than the first space it opened in
-    // space is another word for desktop (e.g. i have fullscreen safari on one desktop and xcode on another desktop)
-    popupWindow?.collectionBehavior = NSWindow.CollectionBehavior.moveToActiveSpace
-//    popupWindow?.hidesOnDeactivate = true
-    let popupViewController: PopupViewController! = PopupViewController()
-    let popupContent = popupWindow!.contentView! as NSView
-    let popupView = popupViewController!.view
-    popupContent.addSubview(popupView)
-    
-    return (popupWindow, popupViewController)
-}
 
 //NSPasteboard.accessibilityFocusedUIElement()
 

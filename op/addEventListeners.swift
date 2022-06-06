@@ -16,7 +16,7 @@ import Cocoa
 // TODO: modify applescript to detect if copy/paste button is available to be pressed or greyed out
 // perhaps even dump accessibility in favor of this (?)
 
-func addEventListeners() {
+func addEventListeners(_ viewController: PopupViewController) {
     // detect if window moved instead of text selected
     var startFocusedWindowFrame = CGRect(x: 0, y: 0, width: 0, height: 0)
     
@@ -28,12 +28,10 @@ func addEventListeners() {
         handler: {
             (event : NSEvent) -> Void in
             
-//            print("mousedown")
-            
             // MARK: - hide popup
             
             // hide popup on click. if this is a new selection event, it will reappear
-            hidePopupWindow()
+            hidePopupWindow(viewController)
             
             // MARK: - handle selection
             
@@ -49,7 +47,7 @@ func addEventListeners() {
             if event.clickCount == 2 || event.clickCount == 3 {
                 // since this is a mouse down event and window position relies on mouse up position, and mouse up position on double click is expected to be same position, we let mouse up position equal mouse down position
                 data.mouseUpPosition = event.locationInWindow
-                handleSelection()
+                handleSelection(viewController)
             }
         }
     )
@@ -63,12 +61,10 @@ func addEventListeners() {
                 // this `if-let-else` for endFocusedWindowFrame is need in case accessibilty privileges are not yet on
                 let endFocusedWindowFrame: CGRect
                 if let frame = getCurrentWindowFrame() {
-                    print("???")
                     endFocusedWindowFrame = frame
                 } else {
                     return
                 }
-                print(startFocusedWindowFrame, endFocusedWindowFrame)
                 // if window hasn't moved or resized, event may be a text selection, so proceed with event handling
                 if startFocusedWindowFrame == endFocusedWindowFrame {
                     
@@ -79,7 +75,7 @@ func addEventListeners() {
                     let yDiff = abs(y0 - y1)
                     
                     if xDiff > 5 || yDiff > 5 {
-                        handleSelection()
+                        handleSelection(viewController)
                     } else {
                         // --handle long press in same spot--
                         
@@ -90,7 +86,7 @@ func addEventListeners() {
                             // bug or feature ???
                             
                             data.popupType = .paste
-                            showPopupWindow()
+                            showPopupWindow(viewController)
                         }
                     }
                 }
@@ -111,7 +107,7 @@ func addEventListeners() {
             print("keydown")
     
             // hide popup on key press
-            hidePopupWindow()
+            hidePopupWindow(viewController)
         }
     )
 }

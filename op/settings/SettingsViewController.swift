@@ -7,6 +7,8 @@
 
 import Cocoa
 
+// TODO: use SwiftUI List() view for this. have a demo as diff xcode project
+
 class SettingsViewController: NSViewController {
 
     override func loadView() {
@@ -36,7 +38,5 @@ class SettingsViewController: NSViewController {
 //        
 //
 //    }
-
-
 }
 

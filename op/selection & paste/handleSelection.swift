@@ -16,7 +16,7 @@ enum AXCopyResult {
 // TODO: have a whitelist/blacklist for apps so e.g. if you don't want it on in photoshop it doesnt need to be
 // TODO: that gives me an idea. what if it could edit files in the pasteboard, so e.g. you copy an image and paste as black and white, and of course it only appear when an image is in clipboard
 
-func handleSelection() {
+func handleSelection(_ viewController: PopupViewController) {
     let pasteboard: NSPasteboard = NSPasteboard.general
     let prevPasteboard: String = pasteboard.string(forType: .string) ?? ""
     print("prev: \(prevPasteboard)")
@@ -95,7 +95,7 @@ func handleSelection() {
                 pasteboard.clearContents()
                 pasteboard.setString(prevPasteboard, forType: .string)
                 
-                showPopupWindow()
+                showPopupWindow(viewController)
             }
         } else if result == .copyFailed { // i.e. app has no copy button, so have to use cmd-c
             // tap cmd-c
@@ -114,7 +114,7 @@ func handleSelection() {
                     print(selection)
                     data.selectionMethod = .keyPress
                     data.currentSelection = selection
-                    showPopupWindow()
+                    showPopupWindow(viewController)
                 }
             }
         } else { // .copyDisabled , so not able to copy

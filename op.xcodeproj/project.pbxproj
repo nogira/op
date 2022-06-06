@@ -25,6 +25,9 @@
 		F47EF8BF284711AF00DEB84B /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47EF8BE284711AF00DEB84B /* main.swift */; };
 		F47EF8C12847146800DEB84B /* StatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47EF8C02847146800DEB84B /* StatusBar.swift */; };
 		F47EF8C32847AEA700DEB84B /* addEventListeners.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47EF8C22847AEA700DEB84B /* addEventListeners.swift */; };
+		F4D61AE3284DE7960006617A /* setPopupWindowFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D61AE2284DE7960006617A /* setPopupWindowFrame.swift */; };
+		F4D61AE5284DE8A60006617A /* createSettingsWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D61AE4284DE8A60006617A /* createSettingsWindow.swift */; };
+		F4D61AE7284DE8DA0006617A /* createPopupWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D61AE6284DE8DA0006617A /* createPopupWindow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +52,9 @@
 		F47EF8BE284711AF00DEB84B /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		F47EF8C02847146800DEB84B /* StatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBar.swift; sourceTree = "<group>"; };
 		F47EF8C22847AEA700DEB84B /* addEventListeners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = addEventListeners.swift; sourceTree = "<group>"; };
+		F4D61AE2284DE7960006617A /* setPopupWindowFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = setPopupWindowFrame.swift; sourceTree = "<group>"; };
+		F4D61AE4284DE8A60006617A /* createSettingsWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = createSettingsWindow.swift; sourceTree = "<group>"; };
+		F4D61AE6284DE8DA0006617A /* createPopupWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = createPopupWindow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,9 +84,11 @@
 		F42C3914284C7C0700CF30DD /* popup */ = {
 			isa = PBXGroup;
 			children = (
+				F4D61AE6284DE8DA0006617A /* createPopupWindow.swift */,
 				F47EF8822845015B00DEB84B /* PopupViewController.swift */,
 				F47EF87E2844F28200DEB84B /* PopupWindowController.swift */,
 				F42C3915284C7C3E00CF30DD /* hide-and-show-window.swift */,
+				F4D61AE2284DE7960006617A /* setPopupWindowFrame.swift */,
 			);
 			path = popup;
 			sourceTree = "<group>";
@@ -88,6 +96,7 @@
 		F42C3917284CC94E00CF30DD /* settings */ = {
 			isa = PBXGroup;
 			children = (
+				F4D61AE4284DE8A60006617A /* createSettingsWindow.swift */,
 				F47EF830284499AB00DEB84B /* SettingsViewController.swift */,
 				F47EF85E2844E1F900DEB84B /* SettingsWindowController.swift */,
 			);
@@ -206,7 +215,10 @@
 				F42C3911284C74B700CF30DD /* key-press.swift in Sources */,
 				F47EF831284499AB00DEB84B /* SettingsViewController.swift in Sources */,
 				F47EF8BF284711AF00DEB84B /* main.swift in Sources */,
+				F4D61AE7284DE8DA0006617A /* createPopupWindow.swift in Sources */,
+				F4D61AE5284DE8A60006617A /* createSettingsWindow.swift in Sources */,
 				F42C390C284C616F00CF30DD /* handleSelection.swift in Sources */,
+				F4D61AE3284DE7960006617A /* setPopupWindowFrame.swift in Sources */,
 				F47EF8C32847AEA700DEB84B /* addEventListeners.swift in Sources */,
 				F42C3916284C7C3E00CF30DD /* hide-and-show-window.swift in Sources */,
 				F47EF85F2844E1F900DEB84B /* SettingsWindowController.swift in Sources */,
