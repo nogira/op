@@ -18,7 +18,7 @@ import Cocoa
 
 func addEventListeners() {
     // detect if window moved instead of text selected
-    var startFocusedWindowFrame: CGRect!
+    var startFocusedWindowFrame = CGRect(x: 0, y: 0, width: 0, height: 0)
     
     // detect long press in same spot
     var timeOfMouseDown: CGFloat!
@@ -28,7 +28,7 @@ func addEventListeners() {
         handler: {
             (event : NSEvent) -> Void in
             
-            print("mousedown")
+//            print("mousedown")
             
             // MARK: - hide popup
             
@@ -57,17 +57,18 @@ func addEventListeners() {
         matching: .leftMouseUp,
         handler: {
             (event : NSEvent) -> Void in
-            
             // confirm this is an actual drag event adn not a random key up with no prior key down
             if data.mouseDownPosition != nil {
                 
                 // this `if-let-else` for endFocusedWindowFrame is need in case accessibilty privileges are not yet on
                 let endFocusedWindowFrame: CGRect
                 if let frame = getCurrentWindowFrame() {
+                    print("???")
                     endFocusedWindowFrame = frame
                 } else {
                     return
                 }
+                print(startFocusedWindowFrame, endFocusedWindowFrame)
                 // if window hasn't moved or resized, event may be a text selection, so proceed with event handling
                 if startFocusedWindowFrame == endFocusedWindowFrame {
                     

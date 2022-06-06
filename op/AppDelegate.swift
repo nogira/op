@@ -110,7 +110,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let pluginsFolder: URL = baseFolder.appendingPathComponent("plugins")
 
         NSWorkspace.shared.selectFile(
-            nil, inFileViewerRootedAtPath: pluginsFolder.absoluteString)
+            nil, inFileViewerRootedAtPath: pluginsFolder.path)
     }
     @objc func quit() {
         print("quit")

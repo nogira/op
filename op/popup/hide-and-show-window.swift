@@ -16,7 +16,7 @@ func showPopupWindow() {
 }
 
 func hidePopupWindow() {
-    print("the-hide-func")
+//    print("the-hide-func")
     let popupWindow: NSWindow? = NSApp.windows[1]
     if let window: NSWindow = popupWindow {
         if window.isVisible {
