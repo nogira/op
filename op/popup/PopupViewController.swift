@@ -22,8 +22,6 @@ JSON:
 
 import Cocoa
 
-
-
 class PopupViewController: NSViewController {
     
     let padding: CGFloat = 2
@@ -47,10 +45,7 @@ class PopupViewController: NSViewController {
         super.viewDidLoad()
         // Do view setup here. (this is only called once; on app start)
         
-        
-        
         addEventListeners(self)
-        
     }
     
     override func viewWillAppear() {
@@ -102,7 +97,6 @@ class PopupViewController: NSViewController {
         // CAN'T GET DIMENSIONS OF BUTTONS UNTIL LAYOUT IS COMPUTED, SO WE CALCULATE WINDOW DIMENSIONS HERE
         setPopupWindowFrame(view, padding)
 
-        
         // remove window after 5 seconds. this is cancelable (the cancellation will get called when hidePopupWindow is called)
         workItem = DispatchWorkItem { self.hide() }
         if let workItem = workItem {
@@ -179,9 +173,6 @@ class PopupViewController: NSViewController {
         default:
             print("title unrecognized")
         }
-  
-        // reset current selection
-        data.currentSelection = ""
         
         // FIXME: if user doesnt click button nothing gets reset.. but maybe thats fine bc a new event will just overwrite anyways ?
     }

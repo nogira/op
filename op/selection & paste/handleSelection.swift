@@ -18,11 +18,18 @@ enum AXCopyResult {
 
 func handleSelection(_ viewController: PopupViewController) {
     let pasteboard: NSPasteboard = NSPasteboard.general
+    
+    print(pasteboard.types)
+    
     let prevPasteboard: String = pasteboard.string(forType: .string) ?? ""
     print("prev: \(prevPasteboard)")
-
-    data.popupType = .copyOrCopyPaste
+    // clear pasteboard so we can test if something was copied or not
+    pasteboard.clearContents()
+    pasteboard.setString("", forType: .string)
     
+    data.popupType = .copyOrCopyPaste
+    // reset current selection
+    data.currentSelection = ""
     
      // must delay key press to allow selection event to occur prior to the copy.
      // usleep freezes event loop so cant use. must use DispatchQueue instead
@@ -32,44 +39,44 @@ func handleSelection(_ viewController: PopupViewController) {
         
         // --------------HANDLE SPECIAL CASES---------------
         
-        if let bundleID = data.prevFocusedApp.bundleIdentifier {
-            print(bundleID)
-            if bundleID == "com.apple.finder" {
-                if let focusedElem = getFocusedElem() {
-                    if let focusedElemIdentifierRef = getAXAttributeValue(
-                        focusedElem, attr: "AXIdentifier") {
-                        
-                        let focusedElemIdentifier = focusedElemIdentifierRef as! String
-                        print(focusedElemIdentifier)
-                        
-                        var continueWithSelection: Bool!
-                        
-                        switch focusedElemIdentifier {
-                        // IF ANY OF THESE, IT IS SAFE TO COPY, IF NOT RETURN
-                            // if its the search bar
-                        case "_NS:123",
-                            // if its a folder renaming text-box
-                            "ShrinkToFit Text Field",
-                            // if its a the "Help" search bar
-                            "_SC_SEARCH_FIELD",
-                            // go -> go to folder
-                            "PathTextField",
-                            // go -> connect to server
-                            "_NS:154":
-                            
-                            continueWithSelection = true
-                        default:
-                            continueWithSelection = false
-                        }
-                        if continueWithSelection == false {
-                            return
-                        }
-                    }
-                }
-            }
-        }
-        
-        
+//        if let bundleID = data.prevFocusedApp.bundleIdentifier {
+//            print(bundleID)
+//            if bundleID == "com.apple.finder" {
+//                if let focusedElem = getFocusedElem() {
+//                    if let focusedElemIdentifierRef = getAXAttributeValue(
+//                        focusedElem, attr: "AXIdentifier") {
+//
+//                        let focusedElemIdentifier = focusedElemIdentifierRef as! String
+//                        print(focusedElemIdentifier)
+//
+//                        var continueWithSelection: Bool!
+//
+//                        switch focusedElemIdentifier {
+//                        // IF ANY OF THESE, IT IS SAFE TO COPY, IF NOT RETURN
+//                            // if its the search bar
+//                        case "_NS:123",
+//                            // if its a folder renaming text-box
+//                            "ShrinkToFit Text Field",
+//                            // if its a the "Help" search bar
+//                            "_SC_SEARCH_FIELD",
+//                            // go -> go to folder
+//                            "PathTextField",
+//                            // go -> connect to server
+//                            "_NS:154":
+//
+//                            continueWithSelection = true
+//                        default:
+//                            continueWithSelection = false
+//                        }
+//                        if continueWithSelection == false {
+//                            return
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//
 
         let result: AXCopyResult = copyViaAX()
         // applescript can do the same thing but much slower so no point using it
@@ -85,17 +92,30 @@ func handleSelection(_ viewController: PopupViewController) {
             
             // 0.01s delay to wait for copy event:
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                // check its a string being copied
+                // return/fail if not string
+                if pasteboard.canReadItem(withDataConformingToTypes: [NSPasteboard.PasteboardType.URL.rawValue]) {
+                    // reset clipboard
+                    pasteboard.clearContents()
+                    pasteboard.setString(prevPasteboard, forType: .string)
+                    
+                    return
+                }
+                
                 data.currentSelection = pasteboard.string(forType: .string) ?? ""
-                print("got via AX")
-                print("copied: \(data.currentSelection)")
-
+                
                 // seems i don't need a delay between getting clipobard and reseting it
                 
                 // reset clipboard
                 pasteboard.clearContents()
                 pasteboard.setString(prevPasteboard, forType: .string)
                 
-                showPopupWindow(viewController)
+                // check something was actually copied
+                if data.currentSelection != "" {
+                    print("got via AX")
+                    print("copied: \(data.currentSelection)")
+                    showPopupWindow(viewController)
+                }
             }
         } else if result == .copyFailed { // i.e. app has no copy button, so have to use cmd-c
             // tap cmd-c
@@ -104,16 +124,15 @@ func handleSelection(_ viewController: PopupViewController) {
             // 0.05s delay to wait for copy event:
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                let selection = pasteboard.string(forType: .string) ?? ""
+                data.currentSelection = pasteboard.string(forType: .string) ?? ""
                 // reset clipboard
                 pasteboard.clearContents()
                 pasteboard.setString(prevPasteboard, forType: .string)
                 
-                if selection != "" {
+                if data.currentSelection != "" {
                     print("got via cmd-c")
-                    print(selection)
+                    print("copied: \(data.currentSelection)")
                     data.selectionMethod = .keyPress
-                    data.currentSelection = selection
                     showPopupWindow(viewController)
                 }
             }

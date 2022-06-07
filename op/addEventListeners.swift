@@ -81,7 +81,7 @@ func addEventListeners(_ viewController: PopupViewController) {
                         
                         let timeOfMouseUp = event.timestamp
                         let timeDiff = timeOfMouseUp - timeOfMouseDown
-                        if timeDiff > 0.40 {
+                        if timeDiff > 0.40 && timeDiff < 1.0 {
                             // FIXME: it is possible to select text then hold down button with selection remaining, so the paste will paste over the selection
                             // bug or feature ???
                             
