@@ -14,11 +14,13 @@ func getEditSubmenuViaAX() -> AXUIElement? {
         if let focusedMenuRef = getAXAttributeValue(focusedApp, attr: "AXMenuBar") {
             let focusedMenu = focusedMenuRef as! AXUIElement
             if let editMenuBtn = getAXElemFromChildrenOfAXElemByTitle(focusedMenu, title: "Edit") {
-                let editMenuBtnChildrenArr = getAXAttributeValue(
-                    editMenuBtn, attr: "AXChildren") as! NSArray
-                // only one item in the array
-                let editSubmenu = editMenuBtnChildrenArr[0] as! AXUIElement
-                return editSubmenu
+                if let editMenuBtnChildrenArrRef = getAXAttributeValue(
+                    editMenuBtn, attr: "AXChildren") {
+                    let editMenuBtnChildrenArr = editMenuBtnChildrenArrRef as! NSArray
+                    // only one item in the array
+                    let editSubmenu = editMenuBtnChildrenArr[0] as! AXUIElement
+                    return editSubmenu
+                }
             }
         }
     }

@@ -13,7 +13,7 @@ import Cocoa
 // have folder where you place plugin folders containing json (which specifies the shell env, the name/relative-location of root script, the regex match for the plugin to popup on, and the icon name), icon image, and the code
 
 /**
- type of popup window to trigger.
+ type of text input, so we know what type of popup window to trigger.
  
  there are three button types to be handled:
  1. **copy-paste**: copy selection → modify text → paste text, replacing original selection
@@ -22,28 +22,35 @@ import Cocoa
  
  all button types will appear on a selection event, though button type 3 will only appear on a long-press event, thus we need to make sure to mark non-paste buttons so we know not to incluide them in a paste-type popup
  */
-enum PopupType {
-    case copyOrCopyPaste
-    case paste
+enum InputType: String, Decodable {
+    //          above struct & protocol are for JSON parsing
+    case selection
+    case pasteboard
 }
 enum SelectionMethod {
     case accessibility
     case keyPress
 }
 
-struct Data {
+struct SelectionData {
     var currentSelection: String = ""
-    var popupType: PopupType = .copyOrCopyPaste
+    var popupType: InputType = .selection
     var selectionMethod: SelectionMethod = .accessibility
     var prevFocusedApp: NSRunningApplication! = nil
     var mouseDownPosition: NSPoint! = nil
     var mouseUpPosition: NSPoint! = nil
 }
 
-var data = Data()
+var data = SelectionData()
+
+
 
 class AppDelegate: NSObject, NSApplicationDelegate {
 
+    let defaults = UserDefaults.standard
+    
+    let actions: [ActionConfig] = loadActions()
+    
 //    lazy var settingsWindowController = SettingsWindowController()
 //    lazy var popupWindowController = PopupWindowController()
     var settingsWindow: NSWindow?
@@ -62,29 +69,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
         
+        
         acquirePrivileges()
         
-        // create application support folder if not already
-        let path: URL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-        let baseFolder: URL =  path.appendingPathComponent("nogira.op")
-        let pluginsFolder: URL = baseFolder.appendingPathComponent("plugins")
-        do {
-            try FileManager.default.createDirectory(
-                at: baseFolder, withIntermediateDirectories: true)
-            try FileManager.default.createDirectory(
-                at: pluginsFolder, withIntermediateDirectories: true)
-        } catch {
-            print(error)
-        }
+        // create status bar item
+        statusBarItem = createStatusBarItem()
+        
+        // create popup window
+        (popupWindow, popupViewController) = createPopupWindow()
         
         // create settings window
         (settingsWindow, settingsViewController) = createSettingsWindow()
-
-        // create popup window
-        (popupWindow, popupViewController) = createPopupWindow()
-
-        // create status bar item
-        statusBarItem = createStatusBarItem()
     }
     
     @objc func settings() {

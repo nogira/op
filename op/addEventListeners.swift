@@ -85,7 +85,7 @@ func addEventListeners(_ viewController: PopupViewController) {
                             // FIXME: it is possible to select text then hold down button with selection remaining, so the paste will paste over the selection
                             // bug or feature ???
                             
-                            data.popupType = .paste
+                            data.popupType = .pasteboard
                             showPopupWindow(viewController)
                         }
                     }

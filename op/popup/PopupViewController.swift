@@ -9,11 +9,11 @@
 
 JSON:
 {
-"appear on": "paste",  // options: "copy", "paste", "all"
+"input type": "selection",  // get input text from :: options: "selection", "clipboard"
 "regex": "https://google.com",
 "regex flags": "gi",
 "env": "/bin/bash"
-"script file": "./main.js"
+"script file": "main.js"
 }
  
  // ability to edit some of these (e.g. regex, check box for eahch of on-paste and on-copy) from settings
@@ -23,6 +23,8 @@ JSON:
 import Cocoa
 
 class PopupViewController: NSViewController {
+    
+    let appDelegate = NSApp.delegate as! AppDelegate
     
     let padding: CGFloat = 2
     
@@ -45,6 +47,9 @@ class PopupViewController: NSViewController {
         super.viewDidLoad()
         // Do view setup here. (this is only called once; on app start)
         
+        
+        initUserDefaults(appDelegate)
+        
         addEventListeners(self)
     }
     
@@ -64,23 +69,23 @@ class PopupViewController: NSViewController {
         // 2. in subviews
         view.subviews = []
         
-        let defaultButtons: [(String, PopupType)] = [
-            ("ab", .copyOrCopyPaste),
-            ("AB", .copyOrCopyPaste),
-            ("cut", .copyOrCopyPaste),
-            ("copy", .copyOrCopyPaste),
-            ("paste =", .paste),
+        let defaultButtons: [(String, InputType)] = [
+            ("ab", .selection),
+            ("AB", .selection),
+            ("cut", .selection),
+            ("copy", .selection),
+            ("paste =", .pasteboard),
         ]
         
         var i = 0
-        let isPastePopup = data.popupType == .paste
+        let isPastePopup = data.popupType == .pasteboard
         let isNotPastePopup = !isPastePopup
         for item in defaultButtons {
             let (title, popupType) = item
             // 1. if this is not a paste popup, free to add every button
             if isNotPastePopup ||
                 // 2. if this is a paste popup, and the button is a paste button, add button, otherwise don't add button
-                isPastePopup && popupType == .paste {
+                isPastePopup && popupType == .pasteboard {
                 
                 buttons.append(NSButton(title: title, target: self, action: #selector(handleButton(_:))))
                 buttons[i].translatesAutoresizingMaskIntoConstraints = false

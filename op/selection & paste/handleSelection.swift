@@ -27,7 +27,7 @@ func handleSelection(_ viewController: PopupViewController) {
     pasteboard.clearContents()
     pasteboard.setString("", forType: .string)
     
-    data.popupType = .copyOrCopyPaste
+    data.popupType = .selection
     // reset current selection
     data.currentSelection = ""
     

@@ -22,6 +22,9 @@ class SettingsViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        
+        // defaults.set(true, forKey: "dark mode")
     }
 
     override var representedObject: Any? {
