@@ -1,5 +1,5 @@
 //
-//  Data.swift
+//  initUserDefaults.swift
 //  op
 //
 //  Created by nogira on 2/6/2022.
@@ -14,11 +14,9 @@ func initUserDefaults(_ delegate: AppDelegate) {
     // ----init UserDefault values if not present----
     
     
-    // TODO: remove these 2 lines when done testing
-    
+    // THIS LINE IS FOR TESTING PURPOSES ONLY TO RESET actionsEnabled
 //    defaults.removeObject(forKey: "actionsEnabled")
 
-    
     
     // FIXME: can't store this in userdefaults as AnyObject, so must use diff method. perhaps store in text file (as data rather than as string)
     
