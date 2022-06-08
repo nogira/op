@@ -28,19 +28,13 @@ class PopupViewController: NSViewController {
     
     let padding: CGFloat = 2
     
-    var buttons: [NSButton]! = []
+    var buttons: [CustomNSButton]! = []
     
     // the work item to hide popup window (gets called after 3 sec of window being visible)
     var workItem: DispatchWorkItem?
     
     
     override func loadView() {
-
-        let screen = NSScreen.main!
-        let rect = screen.frame
-        let screenHeight = rect.size.height
-        let screenWidth = rect.size.width
-        
         // view size needs to be larger than it actually is
         let view = NSView(frame: NSMakeRect(0,0,200,100))
 //        view.wantsLayer = true
@@ -63,36 +57,8 @@ class PopupViewController: NSViewController {
     override func viewWillAppear() {
         super.viewWillAppear()
         
-//        addButtonsToPopup()
+        addButtonsToPopup(self, appDelegate)
         
-        
-        // ---ADD BUTTONS TO VIEW---
-        
-        
-        // reset buttons:
-        // 1. in var store
-        buttons = []
-        // 2. in subviews
-        view.subviews = []
-        
-        var i = 0
-        let isPastePopup = data.popupType == .pasteboard
-        let isNotPastePopup = !isPastePopup
-        for item in appDelegate.actions {
-            let name = item.actionName
-            let popupType = item.inputType
-            // 1. if this is not a paste popup, free to add every button
-            if isNotPastePopup ||
-                // 2. if this is a paste popup, and the button is a paste button, add button, otherwise don't add button
-                isPastePopup && popupType == .pasteboard {
-                
-                buttons.append(NSButton(title: name, target: self, action: #selector(handleButton(_:))))
-                buttons[i].translatesAutoresizingMaskIntoConstraints = false
-                buttons[i].bezelStyle = NSButton.BezelStyle.smallSquare
-                view.addSubview(buttons[i])
-                i += 1
-            }
-        }
         constraintsInit()
     }
     
@@ -144,8 +110,8 @@ class PopupViewController: NSViewController {
         NSLayoutConstraint.activate(constraintsArr)
     }
     
-    @objc func handleButton(_ sender: NSButton) {
-        print(sender.title)
+    @objc func handleButton(_ sender: CustomNSButton) {
+        print(sender.name!)
         
         // refocus previously focused app
         // TODO: this solution is a bit janky bc it visually gets unfocused then re-focused, so better solution would be to prevent unfocus in the forst place
@@ -158,7 +124,7 @@ class PopupViewController: NSViewController {
         }
         
         // perform action on text
-        switch sender.title {
+        switch sender.name {
         case "ab":
             let newText = data.currentSelection.lowercased()
             pasteString(newText)
@@ -176,7 +142,7 @@ class PopupViewController: NSViewController {
             pasteString(newText)
         default:
             for item in appDelegate.actions {
-                if item.actionName == sender.title {
+                if item.actionName == sender.name {
                     let action = item
                     let inputText: String?
                     if action.inputType == .selection {
@@ -196,7 +162,6 @@ class PopupViewController: NSViewController {
                 }
             }
         }
-        
         // FIXME: if user doesnt click button nothing gets reset.. but maybe thats fine bc a new event will just overwrite anyways ?
     }
 }

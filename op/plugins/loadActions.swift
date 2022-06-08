@@ -71,17 +71,6 @@ struct ActionConfig: Decodable {
     @DecodableDefault.EmptyString var scriptFile: String
 }
 
-/**
- get the application's application support folder
- */
-func applicationFolder() -> URL {
-    // create application support folder if not already
-    let path: URL = FileManager.default.urls(
-        for: .applicationSupportDirectory, in: .userDomainMask)[0]
-    let baseFolder: URL =  path.appendingPathComponent("nogira.op")
-    return baseFolder
-}
-
 
 // stuff so able to parse a json file missing some values in the ActionConfig struct
 
