@@ -18,12 +18,6 @@ func initUserDefaults(_ delegate: AppDelegate) {
 //    defaults.removeObject(forKey: "actionsEnabled")
 
     
-    // FIXME: can't store this in userdefaults as AnyObject, so must use diff method. perhaps store in text file (as data rather than as string)
-    
-    // TODO: tbh, do that plugin file changes and default action code changes propogate to the buttons, i think i should run this init every time, and the only thing i store is the data of whether enabled/disabled, thus MIGHT STILL BE ABLE TO USE USERDEFAULTS
-    //                                       🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨
-    
-    
     //  - defaults.bool(forKey: "dark mode") will default to false so no need to init
 
     if defaults.object(forKey: "actionsEnabled") == nil {

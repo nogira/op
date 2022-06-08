@@ -35,6 +35,13 @@ class PopupViewController: NSViewController {
     
     
     override func loadView() {
+
+        let screen = NSScreen.main!
+        let rect = screen.frame
+        let screenHeight = rect.size.height
+        let screenWidth = rect.size.width
+        
+        // view size needs to be larger than it actually is
         let view = NSView(frame: NSMakeRect(0,0,200,100))
 //        view.wantsLayer = true
 //        view.layer?.borderWidth = 2
@@ -59,9 +66,8 @@ class PopupViewController: NSViewController {
 //        addButtonsToPopup()
         
         
-        // ---default buttons---
+        // ---ADD BUTTONS TO VIEW---
         
-        // TODO: to retain order, must use dict in array instead of dict. seems dict give completely random order
         
         // reset buttons:
         // 1. in var store
@@ -69,25 +75,18 @@ class PopupViewController: NSViewController {
         // 2. in subviews
         view.subviews = []
         
-        let defaultButtons: [(String, InputType)] = [
-            ("ab", .selection),
-            ("AB", .selection),
-            ("cut", .selection),
-            ("copy", .selection),
-            ("paste =", .pasteboard),
-        ]
-        
         var i = 0
         let isPastePopup = data.popupType == .pasteboard
         let isNotPastePopup = !isPastePopup
-        for item in defaultButtons {
-            let (title, popupType) = item
+        for item in appDelegate.actions {
+            let name = item.actionName
+            let popupType = item.inputType
             // 1. if this is not a paste popup, free to add every button
             if isNotPastePopup ||
                 // 2. if this is a paste popup, and the button is a paste button, add button, otherwise don't add button
                 isPastePopup && popupType == .pasteboard {
                 
-                buttons.append(NSButton(title: title, target: self, action: #selector(handleButton(_:))))
+                buttons.append(NSButton(title: name, target: self, action: #selector(handleButton(_:))))
                 buttons[i].translatesAutoresizingMaskIntoConstraints = false
                 buttons[i].bezelStyle = NSButton.BezelStyle.smallSquare
                 view.addSubview(buttons[i])
@@ -176,7 +175,26 @@ class PopupViewController: NSViewController {
             let newText: String = NSPasteboard.general.string(forType: .string) ?? ""
             pasteString(newText)
         default:
-            print("title unrecognized")
+            for item in appDelegate.actions {
+                if item.actionName == sender.title {
+                    let action = item
+                    let inputText: String?
+                    if action.inputType == .selection {
+                        inputText = data.currentSelection
+                    } else {
+                        inputText = NSPasteboard.general.string(forType: .string) ?? ""
+                    }
+                    if let inputText = inputText {
+                        do  {
+                            let newText = try executePlugin(action, inputText)
+                            pasteString(newText)
+                        } catch {
+                            print(error)
+                        }
+                    }
+                    break;
+                }
+            }
         }
         
         // FIXME: if user doesnt click button nothing gets reset.. but maybe thats fine bc a new event will just overwrite anyways ?

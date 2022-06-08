@@ -12,6 +12,8 @@ func setPopupWindowFrame(_ view: NSView, _ padding: CGFloat) -> Void {
     let (xPos, yPos) = calculateWindowPosition(windowWidth, windowHeight)
     let newWindowFrame = NSRect(x: xPos, y: yPos, width: windowWidth, height: windowHeight)
     view.window!.setFrame(newWindowFrame, display: true)
+    // need to get root view size too so subviews don't get cut off
+    view.setFrameSize(NSSize(width: windowWidth, height: windowHeight))
 }
 
 func calculateWindowSize(_ view: NSView, _ padding: CGFloat) -> (CGFloat, CGFloat) {

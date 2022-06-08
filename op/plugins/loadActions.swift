@@ -66,6 +66,7 @@ struct ActionConfig: Decodable {
     @DecodableDefault.EmptyString var regexMatchFlags: String
     @DecodableDefault.EmptyString var regexReplace: String
     @DecodableDefault.EmptyString var regexReplaceFlags: String
+    // below are compulsary for plugin, but no for default actions
     @DecodableDefault.EmptyString var env: String
     @DecodableDefault.EmptyString var scriptFile: String
 }
