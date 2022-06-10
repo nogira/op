@@ -15,7 +15,13 @@ func addButtonsToPopup(_ viewController: PopupViewController, _ appDelegate: App
     
     // ---ADD BUTTONS TO VIEW---
     
+
+    // set background of main view, and round it's corners
+    view.wantsLayer = true
+    view.layer?.backgroundColor = NSColor.white.cgColor
+    view.layer?.cornerRadius = 5
     
+
     // reset buttons:
     // 1. in var store
     buttons?.removeAll()
@@ -54,8 +60,12 @@ func addButtonsToPopup(_ viewController: PopupViewController, _ appDelegate: App
                 // this is the id for #selector function to know which button was pressed
                 btn.name = name
                 btn.translatesAutoresizingMaskIntoConstraints = false
-                btn.bezelStyle = NSButton.BezelStyle.smallSquare
+                btn.bezelStyle  = NSButton.BezelStyle.roundRect
+                btn.isBordered = false
+                btn.contentTintColor = NSColor.black
+                
                 buttons!.append(btn)
+                
                 view.addSubview(btn)
                 i += 1
             }

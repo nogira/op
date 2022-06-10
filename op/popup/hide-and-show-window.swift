@@ -16,8 +16,8 @@ func showPopupWindow(_ viewController: PopupViewController) {
 }
 
 func hidePopupWindow(_ viewController: PopupViewController) {
-    let popupWindow: NSWindow? = viewController.view.window
-    if let window: NSWindow = popupWindow {
+    let popupWindow: FloatingPanel? = viewController.appDelegate.popupWindow
+    if let window: FloatingPanel = popupWindow {
         if window.isVisible {
             window.orderOut(nil)
             // cancel auto-hide window worker, as window is already closed

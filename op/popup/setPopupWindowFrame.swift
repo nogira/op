@@ -32,8 +32,8 @@ func calculateWindowSize(_ view: NSView, _ padding: CGFloat) -> (CGFloat, CGFloa
         windowWidth += padding
     }
     windowHeight += subviews[0].frame.height
-    // add top padding (not needed for some reason ???)
-    // windowHeight += padding
+    // add top padding
+     windowHeight += padding
     
     return (windowWidth, windowHeight)
 }

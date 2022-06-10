@@ -20,13 +20,9 @@ func createPopupWindow() -> (FloatingPanel, PopupViewController) {
 //    popupWindow?.hidesOnDeactivate = true
     
     
-    
-//    popupWindow?.isFloatingPanel = true
-    popupWindow?.level = .floating
-//    popupWindow?.isSelectable = false
     popupWindow?.alphaValue = 0.9
-    
-    
+    // ALLOW CUSTOM WINDOW BORDER RADIUS BY REMOVING THE SQUARE WINDOW BACKGROUND AND ALLOWING THE VIEW TO BE THE BACKGROUND
+    popupWindow?.backgroundColor = .clear
     
     let popupViewController: PopupViewController! = PopupViewController()
     let popupContent = popupWindow!.contentView! as NSView
