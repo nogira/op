@@ -20,6 +20,7 @@
 		F4682315284B4FB200AD3DBD /* copy-event.scpt in Resources */ = {isa = PBXBuildFile; fileRef = F4682314284B4FB100AD3DBD /* copy-event.scpt */; };
 		F477D67F2850A78800B8067C /* files.swift in Sources */ = {isa = PBXBuildFile; fileRef = F477D67E2850A78800B8067C /* files.swift */; };
 		F477D6812850D57900B8067C /* addButtonsToPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = F477D6802850D57800B8067C /* addButtonsToPopup.swift */; };
+		F477D68328537BF800B8067C /* FloatingPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F477D68228537BF700B8067C /* FloatingPanel.swift */; };
 		F47EF82F284499AB00DEB84B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47EF82E284499AB00DEB84B /* AppDelegate.swift */; };
 		F47EF831284499AB00DEB84B /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47EF830284499AB00DEB84B /* SettingsViewController.swift */; };
 		F47EF833284499AD00DEB84B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F47EF832284499AD00DEB84B /* Assets.xcassets */; };
@@ -48,6 +49,7 @@
 		F4682314284B4FB100AD3DBD /* copy-event.scpt */ = {isa = PBXFileReference; lastKnownFileType = file; path = "copy-event.scpt"; sourceTree = "<group>"; };
 		F477D67E2850A78800B8067C /* files.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = files.swift; sourceTree = "<group>"; };
 		F477D6802850D57800B8067C /* addButtonsToPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = addButtonsToPopup.swift; sourceTree = "<group>"; };
+		F477D68228537BF700B8067C /* FloatingPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanel.swift; sourceTree = "<group>"; };
 		F47EF82B284499AB00DEB84B /* op.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = op.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F47EF82E284499AB00DEB84B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F47EF830284499AB00DEB84B /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 				F47EF8C02847146800DEB84B /* StatusBar.swift */,
 				F47EF832284499AD00DEB84B /* Assets.xcassets */,
 				F47EF837284499AD00DEB84B /* op.entitlements */,
+				F477D68228537BF700B8067C /* FloatingPanel.swift */,
 			);
 			path = op;
 			sourceTree = "<group>";
@@ -244,6 +247,7 @@
 				F4D61AE3284DE7960006617A /* setPopupWindowFrame.swift in Sources */,
 				F477D6812850D57900B8067C /* addButtonsToPopup.swift in Sources */,
 				F47EF8C32847AEA700DEB84B /* addEventListeners.swift in Sources */,
+				F477D68328537BF800B8067C /* FloatingPanel.swift in Sources */,
 				F42C3916284C7C3E00CF30DD /* hide-and-show-window.swift in Sources */,
 				F47EF85F2844E1F900DEB84B /* SettingsWindowController.swift in Sources */,
 				F47EF8802844F28200DEB84B /* PopupWindowController.swift in Sources */,

@@ -8,8 +8,8 @@
 import AppKit
 
 func showPopupWindow(_ viewController: PopupViewController) {
-    let popupWindow: NSWindow? = viewController.view.window
-    if let window: NSWindow = popupWindow {
+    let popupWindow: FloatingPanel? = viewController.appDelegate.popupWindow
+    if let window: FloatingPanel = popupWindow {
         // show window / send window to front
         window.orderFrontRegardless()
     }

@@ -7,16 +7,7 @@
 
 /*
 
-JSON:
-{
-"input type": "selection",  // get input text from :: options: "selection", "clipboard"
-"regex": "https://google.com",
-"regex flags": "gi",
-"env": "/bin/bash"
-"script file": "main.js"
-}
- 
- // ability to edit some of these (e.g. regex, check box for eahch of on-paste and on-copy) from settings
+TODO: add ability to edit some of these (e.g. regex, check box for eahch of on-paste and on-copy) from settings
 
 */
 

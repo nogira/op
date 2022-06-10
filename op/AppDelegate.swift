@@ -55,7 +55,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 //    lazy var popupWindowController = PopupWindowController()
     var settingsWindow: NSWindow?
     var settingsViewController: SettingsViewController?
-    var popupWindow: NSWindow?
+    var popupWindow: FloatingPanel?
     var popupViewController: PopupViewController?
     
     // store state of our status bar item so it stays in memory, and thus displays on status bar

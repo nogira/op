@@ -42,14 +42,14 @@ func addButtonsToPopup(_ viewController: PopupViewController, _ appDelegate: App
                         .appendingPathComponent(item.actionName)
                         .appendingPathComponent(item.iconFile)
                     let icon = resizeImage(image: NSImage(byReferencing: iconURL), w: 15, h: 15)
-                    btn = CustomNSButton(image: icon, target: viewController, action: #selector(viewController.handleButton(_:)))
+                    btn = CustomNSButton(image: icon, target: viewController, action: #selector(PopupViewController.handleButton(_:)))
                     
                     // TODO: find a new way to pass message from button to action. ORRR just declare a var in viewcontroller instead of explicitly passing
                     
 
     //                    buttons[i].setFrameSize(NSSize(width: 15, height: 15))
                 } else {
-                    btn = CustomNSButton(title: name, target: viewController, action: #selector(viewController.handleButton(_:)))
+                    btn = CustomNSButton(title: name, target: viewController, action: #selector(PopupViewController.handleButton(_:)))
                 }
                 // this is the id for #selector function to know which button was pressed
                 btn.name = name
