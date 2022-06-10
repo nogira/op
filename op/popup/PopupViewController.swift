@@ -109,7 +109,7 @@ class PopupViewController: NSViewController {
         data.prevFocusedApp.activate()
         
         // even though i have an mouse-down event listener event that should close the popup window, it doesnt seem to close if the mouse-down is on the window itself, so must also close window from here:
-        let popupWindow: NSWindow? = view.window
+        let popupWindow: FloatingPanel? = appDelegate.popupWindow
         if let window = popupWindow {
             window.orderOut(self)
         }

@@ -103,6 +103,7 @@
 		F42C3914284C7C0700CF30DD /* popup */ = {
 			isa = PBXGroup;
 			children = (
+				F477D68228537BF700B8067C /* FloatingPanel.swift */,
 				F4D61AE6284DE8DA0006617A /* createPopupWindow.swift */,
 				F47EF8822845015B00DEB84B /* PopupViewController.swift */,
 				F47EF87E2844F28200DEB84B /* PopupWindowController.swift */,
@@ -156,7 +157,6 @@
 				F47EF8C02847146800DEB84B /* StatusBar.swift */,
 				F47EF832284499AD00DEB84B /* Assets.xcassets */,
 				F47EF837284499AD00DEB84B /* op.entitlements */,
-				F477D68228537BF700B8067C /* FloatingPanel.swift */,
 			);
 			path = op;
 			sourceTree = "<group>";

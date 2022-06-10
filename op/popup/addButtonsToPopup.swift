@@ -13,15 +13,17 @@ func addButtonsToPopup(_ viewController: PopupViewController, _ appDelegate: App
     var buttons = viewController.buttons
     let view = viewController.view
     
-    // ---ADD BUTTONS TO VIEW---
+    let darkMode: Bool = delegate.defaults.bool(forKey: "dark mode")
+    let backgroundColor = darkMode ? NSColor.black.cgColor : NSColor.white.cgColor
+    let buttonColor = darkMode ? NSColor.white : NSColor.black
     
-
     // set background of main view, and round it's corners
     view.wantsLayer = true
-    view.layer?.backgroundColor = NSColor.white.cgColor
+    view.layer?.backgroundColor = backgroundColor
     view.layer?.cornerRadius = 5
     
-
+    // ---ADD BUTTONS TO VIEW---
+    
     // reset buttons:
     // 1. in var store
     buttons?.removeAll()
@@ -48,6 +50,8 @@ func addButtonsToPopup(_ viewController: PopupViewController, _ appDelegate: App
                         .appendingPathComponent(item.actionName)
                         .appendingPathComponent(item.iconFile)
                     let icon = resizeImage(image: NSImage(byReferencing: iconURL), w: 15, h: 15)
+                    // allow image to be recolored to white in dark mode
+                    icon.isTemplate = true
                     btn = CustomNSButton(image: icon, target: viewController, action: #selector(PopupViewController.handleButton(_:)))
                     
                     // TODO: find a new way to pass message from button to action. ORRR just declare a var in viewcontroller instead of explicitly passing
@@ -60,9 +64,11 @@ func addButtonsToPopup(_ viewController: PopupViewController, _ appDelegate: App
                 // this is the id for #selector function to know which button was pressed
                 btn.name = name
                 btn.translatesAutoresizingMaskIntoConstraints = false
+                
+                // button styling
                 btn.bezelStyle  = NSButton.BezelStyle.roundRect
                 btn.isBordered = false
-                btn.contentTintColor = NSColor.black
+                btn.contentTintColor = buttonColor
                 
                 buttons!.append(btn)
                 

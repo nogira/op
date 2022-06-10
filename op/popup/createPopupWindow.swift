@@ -7,7 +7,7 @@
 
 import AppKit
 
-func createPopupWindow() -> (FloatingPanel, PopupViewController) {
+func createPopupWindow(_ delegate: AppDelegate) -> (FloatingPanel, PopupViewController) {
     let popupWindow: FloatingPanel! = FloatingPanel( // 10, 1000, 200, 20
         contentRect: NSMakeRect(10, 800, 94, 24),
         //styleMask: [.unifiedTitleAndToolbar, .hudWindow],
@@ -20,7 +20,9 @@ func createPopupWindow() -> (FloatingPanel, PopupViewController) {
 //    popupWindow?.hidesOnDeactivate = true
     
     
-    popupWindow?.alphaValue = 0.9
+    let darkMode: Bool = delegate.defaults.bool(forKey: "dark mode")
+    popupWindow?.alphaValue = darkMode ? 0.8 : 0.9 // dark mode on 0.9 looks like no transparency so it needs alpha lower
+    
     // ALLOW CUSTOM WINDOW BORDER RADIUS BY REMOVING THE SQUARE WINDOW BACKGROUND AND ALLOWING THE VIEW TO BE THE BACKGROUND
     popupWindow?.backgroundColor = .clear
     

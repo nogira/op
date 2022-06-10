@@ -76,7 +76,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         statusBarItem = createStatusBarItem()
         
         // create popup window
-        (popupWindow, popupViewController) = createPopupWindow()
+        (popupWindow, popupViewController) = createPopupWindow(self)
         
         // create settings window
         (settingsWindow, settingsViewController) = createSettingsWindow()
