@@ -5,7 +5,7 @@
 //  Created by nogira on 7/6/2022.
 //
 
-import Foundation
+import AppKit
 
 func loadActions() -> [ActionConfig] {
     
@@ -19,7 +19,8 @@ func loadActions() -> [ActionConfig] {
      */
     
     let defaultActions: [ActionConfig] = [
-        ActionConfig(actionName: "search", inputType: .selection, iconSFSymbol: "magnifyingglass", url: "https://search.brave.com/search?q={text}"),
+        ActionConfig(actionName: "search", inputType: .selection,
+            iconSFSymbol: NSImage(systemSymbolName: "magnifyingglass", accessibilityDescription: nil), searchURL: "https://search.brave.com/search?q={text}"),
         ActionConfig(actionName: "ab", inputType: .selection),
         ActionConfig(actionName: "AB", inputType: .selection),
         ActionConfig(actionName: "cut", inputType: .selection),
@@ -71,14 +72,85 @@ func loadActions() -> [ActionConfig] {
 struct ActionConfig: Decodable {
     let actionName: String
     let inputType: InputType
-    var iconFile: String!
-    var iconSFSymbol: String!
+    
+    // URL and NSImage use half the memory bytes as String, so the strings are converted to their respective types with custom decoding further below
+    var iconImage: NSImage!
+    var iconSFSymbol: NSImage!
     var regexMatch: String!
     var regexMatchFlags: String!
     var regexReplace: String!
     var regexReplaceFlags: String!
     // below are compulsary for plugin, but no for default actions
-    var env: String!
-    var scriptFile: String!
-    var url: String!
+    var scriptEnvironmentURL: URL!
+    var scriptFileURL: URL!
+    var searchURL: String!
+    
+    enum CodingKeys: String, CodingKey {
+        case actionName
+        case inputType
+        case iconImage = "iconFile"
+        case iconSFSymbol
+        case regexMatch
+        case regexMatchFlags
+        case regexReplace
+        case regexReplaceFlags
+        case scriptEnvironmentURL = "scriptEnvironment"
+        case scriptFileURL = "scriptFile"
+        case searchURL
+    }
+}
+// custom decode
+extension ActionConfig {
+
+    init(from decoder: Decoder) throws {
+
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        let actionName = try container.decode(String.self, forKey: .actionName)
+        let inputType = try container.decode(InputType.self, forKey: .inputType)
+
+        let pluginFolderURL: URL = pluginsFolder()
+            .appendingPathComponent(actionName)
+            
+        // initially decode as string, then convert to image
+        let iconFileStr = try container.decodeIfPresent(String.self, forKey: .iconImage)
+        var iconImage: NSImage?
+        if let iconFileStr = iconFileStr {
+            let iconURL = pluginFolderURL.appendingPathComponent(iconFileStr)
+            iconImage = NSImage(byReferencing: iconURL)
+        }
+        // initially decode as string, then convert to image
+        let iconSFSymbolStr = try container.decodeIfPresent(String.self, forKey: .iconSFSymbol)
+        var iconSFSymbol: NSImage?
+        if let iconSFSymbolStr = iconSFSymbolStr {
+            iconSFSymbol = NSImage(systemSymbolName: iconSFSymbolStr, accessibilityDescription: nil)
+        }
+        let regexMatch = try container.decodeIfPresent(String.self, forKey: .regexMatch)
+        let regexMatchFlags = try container.decodeIfPresent(String.self, forKey: .regexMatchFlags)
+        let regexReplace = try container.decodeIfPresent(String.self, forKey: .regexReplace)
+        let regexReplaceFlags = try container.decodeIfPresent(String.self, forKey: .regexReplaceFlags)
+        let scriptEnvironmentStr = try container.decodeIfPresent(String.self, forKey: .scriptEnvironmentURL)
+        var scriptEnvironmentURL: URL?
+        if let scriptEnvironmentStr = scriptEnvironmentStr {
+            scriptEnvironmentURL = pluginFolderURL.appendingPathComponent(scriptEnvironmentStr)
+        }
+        let scriptFileStr = try container.decodeIfPresent(String.self, forKey: .scriptFileURL)
+        var scriptFileURL: URL?
+        if let scriptFileStr = scriptFileStr {
+            scriptFileURL = pluginFolderURL.appendingPathComponent(scriptFileStr)
+        }
+        let searchURL = try container.decodeIfPresent(String.self, forKey: .searchURL)
+
+        self.init(actionName: actionName,
+                  inputType: inputType,
+                  iconImage: iconImage,
+                  iconSFSymbol: iconSFSymbol,
+                  regexMatch: regexMatch,
+                  regexMatchFlags: regexMatchFlags,
+                  regexReplace: regexReplace,
+                  regexReplaceFlags: regexReplaceFlags,
+                  scriptEnvironmentURL: scriptEnvironmentURL,
+                  scriptFileURL: scriptFileURL,
+                  searchURL: searchURL)
+    }
 }

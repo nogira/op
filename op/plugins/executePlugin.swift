@@ -8,16 +8,11 @@
 import Foundation
 
 func executePlugin(_ action: ActionConfig, _ inputText: String) throws -> String {
-    let applicationFolder = applicationFolder()
-    let scriptPath = applicationFolder.appendingPathComponent("plugins")
-        .appendingPathComponent(action.actionName)
-        .appendingPathComponent(action.scriptFile).path
+    let scriptPath = action.scriptFileURL.path
+    let envURL = action.scriptEnvironmentURL
     
-    let homeFolder: URL = FileManager.default.homeDirectoryForCurrentUser
-    let envURL = homeFolder.appendingPathComponent(action.env)
-    
-    let outputText = try shell(inputText, envURL, scriptPath)
-    return outputText    
+    let outputText = try shell(inputText, envURL!, scriptPath)
+    return outputText
 }
 
 
