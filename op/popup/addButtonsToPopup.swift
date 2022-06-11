@@ -48,15 +48,15 @@ func addButtonsToPopup(_ viewController: PopupViewController, _ appDelegate: App
                 // MARK: - add icon button
                 // if action has an icon, use it
                 if let iconImage: NSImage = item.iconImage {
-                    let icon = resizeImage(image: iconImage, w: 15, h: 15)
+                    let icon = proportionalResizeImage(image: iconImage, w: 15, h: 15)
                     // allow image to be recolored to white in dark mode
                     icon.isTemplate = true
                     btn = CustomImageNSButton(image: icon, target: viewController, action: #selector(PopupViewController.handleButton(_:)))
                 // MARK: - add text button
                 } else if let iconSFSymbol: NSImage = item.iconSFSymbol {
-                    let icon = resizeImage(image: iconSFSymbol, w: 15, h: 15)
+                    let icon = proportionalResizeImage(image: iconSFSymbol, w: 15, h: 15)
                     // allow image to be recolored to white in dark mode
-                    icon.isTemplate = true
+//                    icon.isTemplate = true
                     btn = CustomImageNSButton(image: icon, target: viewController, action: #selector(PopupViewController.handleButton(_:)))
                 } else {
                     btn = CustomNSButton(title: name, target: viewController, action: #selector(PopupViewController.handleButton(_:)))

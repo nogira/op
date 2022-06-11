@@ -28,13 +28,37 @@ func pluginsFolder() -> URL {
     return pluginsFolder
 }
 
-// https://stackoverflow.com/questions/31155299/how-to-resize-nsimage-in-swift
+func proportionalResizeImage(image: NSImage, w: CGFloat, h: CGFloat) -> NSImage {
+    let imgW = image.size.width
+    let imgH = image.size.height
+    let prop1 = imgW / imgH
+    let prop2 = w / h
+    var newImgW: CGFloat!
+    var newImgH: CGFloat!
+    var padW: CGFloat!
+    var padH: CGFloat!
+    // work out if / which sides needs padding
+    // if input resize is w=h, and image is w>h: → prop1>prop2, and new imgW will match w, so height will be padded
+    // also, imgH will have to be resized as imgH * (w/imgW)
+    if prop1 > prop2 {
+        newImgW = w
+        newImgH = imgH * (w/imgW)
+        // pad height
+        padH = (h - newImgH) / 2
+        padW = 0
+    } else {
+        newImgH = h
+        newImgW = imgW * (h/imgH)
+        // pad width
+        padW = (w - newImgW) / 2
+        padH = 0
+    }
+    let newImgSize: NSSize = NSMakeSize(newImgW, newImgH)
+    let destSize: NSSize = NSMakeSize(w, h)
 
-func resizeImage(image: NSImage, w: Int, h: Int) -> NSImage {
-    var destSize = NSMakeSize(CGFloat(w), CGFloat(h))
-    var newImage = NSImage(size: destSize)
+    let newImage = NSImage(size: destSize)
     newImage.lockFocus()
-    image.draw(in: NSMakeRect(0, 0, destSize.width, destSize.height), from: NSMakeRect(0, 0, image.size.width, image.size.height), operation: .sourceOver, fraction: CGFloat(1))
+    image.draw(in: NSMakeRect(padW, padH, newImgSize.width, newImgSize.height), from: NSMakeRect(0, 0, image.size.width, image.size.height), operation: .sourceOver, fraction: CGFloat(1))
     newImage.unlockFocus()
     newImage.size = destSize
     return newImage

@@ -7,6 +7,10 @@
 
 import AppKit
 
+func SFSymbolNSImage(_ name: String) -> NSImage {
+    return NSImage(systemSymbolName: name, accessibilityDescription: nil)!
+}
+
 func loadActions() -> [ActionConfig] {
     
     /* TODO: --
@@ -19,12 +23,11 @@ func loadActions() -> [ActionConfig] {
      */
     
     let defaultActions: [ActionConfig] = [
-        ActionConfig(actionName: "search", inputType: .selection,
-            iconSFSymbol: NSImage(systemSymbolName: "magnifyingglass", accessibilityDescription: nil), searchURL: "https://search.brave.com/search?q={text}"),
+        ActionConfig(actionName: "search", inputType: .selection, iconSFSymbol: SFSymbolNSImage("magnifyingglass"), searchURL: "https://search.brave.com/search?q={text}"),
         ActionConfig(actionName: "ab", inputType: .selection),
         ActionConfig(actionName: "AB", inputType: .selection),
-        ActionConfig(actionName: "cut", inputType: .selection),
-        ActionConfig(actionName: "copy", inputType: .selection),
+        ActionConfig(actionName: "cut", inputType: .selection, iconSFSymbol: SFSymbolNSImage("scissors")),
+        ActionConfig(actionName: "copy", inputType: .selection, iconSFSymbol: SFSymbolNSImage("doc.on.doc.fill")),
         ActionConfig(actionName: "paste =", inputType: .pasteboard),
     ]
     var actions = defaultActions
@@ -130,7 +133,6 @@ extension ActionConfig {
         let regexReplace = try container.decodeIfPresent(String.self, forKey: .regexReplace)
         let regexReplaceFlags = try container.decodeIfPresent(String.self, forKey: .regexReplaceFlags)
         let scriptEnvironmentStr = try container.decodeIfPresent(String.self, forKey: .scriptEnvironmentURL)
-        
         var scriptEnvironmentURL: URL?
         if let scriptEnvironmentStr = scriptEnvironmentStr {
             let homeFolder: URL = FileManager.default.homeDirectoryForCurrentUser
@@ -156,3 +158,5 @@ extension ActionConfig {
                   searchURL: searchURL)
     }
 }
+
+
