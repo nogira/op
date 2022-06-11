@@ -38,21 +38,24 @@ func addButtonsToPopup(_ viewController: PopupViewController, _ appDelegate: App
         let popupType = item.inputType
         // add if enabled
         if actionsEnabled[name] == true {
+            // MARK: - decide whether to add action to popup
             // 1. if this is not a paste popup, free to add every button
             if isNotPastePopup ||
                 // 2. if this is a paste popup, and the button is a paste button, add button, otherwise don't add button
                 isPastePopup && popupType == .pasteboard {
                 
                 let btn: CustomNSButton!
+                // MARK: - add icon button
                 // if action has an icon, use it
-                if item.iconFile != "" {
+                if let iconFile: String = item.iconFile {
                     let iconURL: URL = pluginsFolder()
                         .appendingPathComponent(item.actionName)
-                        .appendingPathComponent(item.iconFile)
+                        .appendingPathComponent(iconFile)
                     let icon = resizeImage(image: NSImage(byReferencing: iconURL), w: 15, h: 15)
                     // allow image to be recolored to white in dark mode
                     icon.isTemplate = true
                     btn = CustomImageNSButton(image: icon, target: viewController, action: #selector(PopupViewController.handleButton(_:)))
+                // MARK: - add text button
                 } else {
                     btn = CustomNSButton(title: name, target: viewController, action: #selector(PopupViewController.handleButton(_:)))
                 }
@@ -75,16 +78,6 @@ func addButtonsToPopup(_ viewController: PopupViewController, _ appDelegate: App
             }
         }
     }
-    print(
-        buttons?.map({ btn in
-            btn.frame
-        })
-    )
-    print(
-        view.subviews.map({ btn in
-            btn.frame
-        })
-    )
 }
 
 class CustomNSButton: NSButton {

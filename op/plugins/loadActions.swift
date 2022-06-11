@@ -8,7 +8,18 @@
 import Foundation
 
 func loadActions() -> [ActionConfig] {
+    
+    /* TODO: --
+        1. Find and replace     "r.square.fill"
+        2. Search        "magnifyingglass"
+        3. font (e.g. bold, italic)
+        4. fancy text     "mustache.fill"
+        5. highlighter    "highlighter"
+        
+     */
+    
     let defaultActions: [ActionConfig] = [
+//        ActionConfig(actionName: "search", inputType: .selection, iconFile: <#T##DecodableDefault.EmptyString#>, regexMatch: <#T##DecodableDefault.EmptyString#>, regexMatchFlags: <#T##DecodableDefault.EmptyString#>, regexReplace: <#T##DecodableDefault.EmptyString#>, regexReplaceFlags: <#T##DecodableDefault.EmptyString#>, env: <#T##DecodableDefault.EmptyString#>, scriptFile: <#T##DecodableDefault.EmptyString#>)
         ActionConfig(actionName: "ab", inputType: .selection),
         ActionConfig(actionName: "AB", inputType: .selection),
         ActionConfig(actionName: "cut", inputType: .selection),
@@ -57,97 +68,16 @@ func loadActions() -> [ActionConfig] {
     return actions
 }
 
-// use ActionConfig list to track position of button
 struct ActionConfig: Decodable {
     let actionName: String
     let inputType: InputType
-    @DecodableDefault.EmptyString var iconFile
-    @DecodableDefault.EmptyString var regexMatch: String
-    @DecodableDefault.EmptyString var regexMatchFlags: String
-    @DecodableDefault.EmptyString var regexReplace: String
-    @DecodableDefault.EmptyString var regexReplaceFlags: String
+    var iconFile: String!
+    var regexMatch: String!
+    var regexMatchFlags: String!
+    var regexReplace: String!
+    var regexReplaceFlags: String!
     // below are compulsary for plugin, but no for default actions
-    @DecodableDefault.EmptyString var env: String
-    @DecodableDefault.EmptyString var scriptFile: String
+    var env: String!
+    var scriptFile: String!
+    var url: String!
 }
-
-
-// stuff so able to parse a json file missing some values in the ActionConfig struct
-
-// https://www.swiftbysundell.com/tips/default-decoding-values/
-
-protocol DecodableDefaultSource {
-    associatedtype Value: Decodable
-    static var defaultValue: Value { get }
-}
-
-enum DecodableDefault {}
-
-extension DecodableDefault {
-    @propertyWrapper
-    struct Wrapper<Source: DecodableDefaultSource> {
-        typealias Value = Source.Value
-        var wrappedValue = Source.defaultValue
-    }
-}
-
-extension DecodableDefault.Wrapper: Decodable {
-    init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        wrappedValue = try container.decode(Value.self)
-    }
-}
-
-extension KeyedDecodingContainer {
-    func decode<T>(_ type: DecodableDefault.Wrapper<T>.Type,
-                   forKey key: Key) throws -> DecodableDefault.Wrapper<T> {
-        try decodeIfPresent(type, forKey: key) ?? .init()
-    }
-}
-
-extension DecodableDefault {
-    typealias Source = DecodableDefaultSource
-    typealias List = Decodable & ExpressibleByArrayLiteral
-    typealias Map = Decodable & ExpressibleByDictionaryLiteral
-
-    enum Sources {
-        enum True: Source {
-            static var defaultValue: Bool { true }
-        }
-
-        enum False: Source {
-            static var defaultValue: Bool { false }
-        }
-
-        enum EmptyString: Source {
-            static var defaultValue: String { "" }
-        }
-
-        enum EmptyList<T: List>: Source {
-            static var defaultValue: T { [] }
-        }
-
-        enum EmptyMap<T: Map>: Source {
-            static var defaultValue: T { [:] }
-        }
-    }
-}
-
-extension DecodableDefault {
-    typealias True = Wrapper<Sources.True>
-    typealias False = Wrapper<Sources.False>
-    typealias EmptyString = Wrapper<Sources.EmptyString>
-    typealias EmptyList<T: List> = Wrapper<Sources.EmptyList<T>>
-    typealias EmptyMap<T: Map> = Wrapper<Sources.EmptyMap<T>>
-}
-
-extension DecodableDefault.Wrapper: Equatable where Value: Equatable {}
-extension DecodableDefault.Wrapper: Hashable where Value: Hashable {}
-
-extension DecodableDefault.Wrapper: Encodable where Value: Encodable {
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        try container.encode(wrappedValue)
-    }
-}
-
