@@ -42,7 +42,7 @@ func initUserDefaults(_ delegate: AppDelegate) {
         
         for action in actions {
             let name = action.actionName
-            // if present in newActionsEnabled dict, remove from the temp trackingActionsEnabled dict
+            // if action is present in newActionsEnabled dict, remove from the temp trackingActionsEnabled dict
             if newActionsEnabled[name] != nil {
                 trackingActionsEnabled[name] = nil
                 
@@ -58,5 +58,9 @@ func initUserDefaults(_ delegate: AppDelegate) {
         }
         // confirm userdefaults was not mutated:
 //        print(defaults.object(forKey: "actionsEnabled") as! [String: Bool])
+        
+        // set new actionsEnabled
+        defaults.set(newActionsEnabled, forKey: "actionsEnabled")
     }
+    
 }

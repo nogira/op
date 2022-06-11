@@ -19,7 +19,7 @@ func loadActions() -> [ActionConfig] {
      */
     
     let defaultActions: [ActionConfig] = [
-//        ActionConfig(actionName: "search", inputType: .selection, iconFile: <#T##DecodableDefault.EmptyString#>, regexMatch: <#T##DecodableDefault.EmptyString#>, regexMatchFlags: <#T##DecodableDefault.EmptyString#>, regexReplace: <#T##DecodableDefault.EmptyString#>, regexReplaceFlags: <#T##DecodableDefault.EmptyString#>, env: <#T##DecodableDefault.EmptyString#>, scriptFile: <#T##DecodableDefault.EmptyString#>)
+        ActionConfig(actionName: "search", inputType: .selection, iconSFSymbol: "magnifyingglass", url: "https://search.brave.com/search?q={text}"),
         ActionConfig(actionName: "ab", inputType: .selection),
         ActionConfig(actionName: "AB", inputType: .selection),
         ActionConfig(actionName: "cut", inputType: .selection),
@@ -72,6 +72,7 @@ struct ActionConfig: Decodable {
     let actionName: String
     let inputType: InputType
     var iconFile: String!
+    var iconSFSymbol: String!
     var regexMatch: String!
     var regexMatchFlags: String!
     var regexReplace: String!
