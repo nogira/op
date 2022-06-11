@@ -53,7 +53,11 @@ class PopupViewController: NSViewController {
         constraintsInit()
     }
     
+    // view layout occurs between these two functions, causing resizing of view frames
+    // https://stackoverflow.com/questions/17637523/view-frame-changes-between-viewwillappear-and-viewdidappear
+    
     override func viewDidAppear() {
+        super.viewDidAppear()
         
         // CAN'T GET DIMENSIONS OF BUTTONS UNTIL LAYOUT IS COMPUTED, SO WE CALCULATE WINDOW DIMENSIONS HERE
         setPopupWindowFrame(view, padding)

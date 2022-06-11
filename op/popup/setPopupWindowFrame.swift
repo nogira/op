@@ -19,7 +19,7 @@ func setPopupWindowFrame(_ view: NSView, _ padding: CGFloat) -> Void {
 func calculateWindowSize(_ view: NSView, _ padding: CGFloat) -> (CGFloat, CGFloat) {
     var windowWidth: CGFloat = 0
     var windowHeight: CGFloat = 0
-
+    
     // add left padding
     windowWidth += padding
     // add bottom padding

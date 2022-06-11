@@ -52,19 +52,17 @@ func addButtonsToPopup(_ viewController: PopupViewController, _ appDelegate: App
                     let icon = resizeImage(image: NSImage(byReferencing: iconURL), w: 15, h: 15)
                     // allow image to be recolored to white in dark mode
                     icon.isTemplate = true
-                    btn = CustomNSButton(image: icon, target: viewController, action: #selector(PopupViewController.handleButton(_:)))
-                    
-                    // TODO: find a new way to pass message from button to action. ORRR just declare a var in viewcontroller instead of explicitly passing
-                    
-
-    //                    buttons[i].setFrameSize(NSSize(width: 15, height: 15))
+                    btn = CustomImageNSButton(image: icon, target: viewController, action: #selector(PopupViewController.handleButton(_:)))
                 } else {
                     btn = CustomNSButton(title: name, target: viewController, action: #selector(PopupViewController.handleButton(_:)))
                 }
                 // this is the id for #selector function to know which button was pressed
                 btn.name = name
-                btn.translatesAutoresizingMaskIntoConstraints = false
                 
+                // prevent autolayout from changing the size of the frame
+                // THIS MUST BE SET BEFORE MANUALLY SETTING THE FRAME (nvm didnt work)
+                btn.translatesAutoresizingMaskIntoConstraints = false
+
                 // button styling
                 btn.bezelStyle  = NSButton.BezelStyle.roundRect
                 btn.isBordered = false
@@ -77,8 +75,28 @@ func addButtonsToPopup(_ viewController: PopupViewController, _ appDelegate: App
             }
         }
     }
+    print(
+        buttons?.map({ btn in
+            btn.frame
+        })
+    )
+    print(
+        view.subviews.map({ btn in
+            btn.frame
+        })
+    )
 }
 
 class CustomNSButton: NSButton {
     var name: String?
 }
+
+class CustomImageNSButton: CustomNSButton {
+    override var intrinsicContentSize: NSSize {
+        var size = super.intrinsicContentSize
+        size.width += 7 // left and right padding to match padding of text
+        size.height += 1 // match the 16 px height of text buttons
+        return size;
+    }
+}
+
