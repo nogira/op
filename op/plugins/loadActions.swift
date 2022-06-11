@@ -130,9 +130,11 @@ extension ActionConfig {
         let regexReplace = try container.decodeIfPresent(String.self, forKey: .regexReplace)
         let regexReplaceFlags = try container.decodeIfPresent(String.self, forKey: .regexReplaceFlags)
         let scriptEnvironmentStr = try container.decodeIfPresent(String.self, forKey: .scriptEnvironmentURL)
+        
         var scriptEnvironmentURL: URL?
         if let scriptEnvironmentStr = scriptEnvironmentStr {
-            scriptEnvironmentURL = pluginFolderURL.appendingPathComponent(scriptEnvironmentStr)
+            let homeFolder: URL = FileManager.default.homeDirectoryForCurrentUser
+            scriptEnvironmentURL = homeFolder.appendingPathComponent(scriptEnvironmentStr)
         }
         let scriptFileStr = try container.decodeIfPresent(String.self, forKey: .scriptFileURL)
         var scriptFileURL: URL?
