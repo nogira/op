@@ -179,7 +179,7 @@ class PopupViewController: NSViewController {
                             NSWorkspace.shared.open(url)
                         }
                     }
-                    break;
+                    break
                 }
             }
         }
