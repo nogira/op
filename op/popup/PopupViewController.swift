@@ -118,6 +118,10 @@ class PopupViewController: NSViewController {
             window.orderOut(self)
         }
         
+        // TODO: implement the regexReplace action attribute
+        
+        // TODO: implement regex flag action sttributes for both match and replace
+        
         // perform action on text
         switch sender.name {
         case "ab":
@@ -136,21 +140,43 @@ class PopupViewController: NSViewController {
             let newText: String = NSPasteboard.general.string(forType: .string) ?? ""
             pasteString(newText)
         default:
+            // loop over actions to find the action with the same name
             for item in appDelegate.actions {
                 if item.actionName == sender.name {
                     let action = item
+                    // get input type
                     let inputText: String?
                     if action.inputType == .selection {
                         inputText = data.currentSelection
                     } else {
                         inputText = NSPasteboard.general.string(forType: .string) ?? ""
                     }
-                    if let inputText = inputText {
-                        do  {
-                            let newText = try executePlugin(action, inputText)
-                            pasteString(newText)
-                        } catch {
-                            print(error)
+                    if var inputText = inputText {
+                        // check if it is a search action or script action
+                        if action.scriptFileURL != nil {
+                            do  {
+                                let newText = try executePlugin(action, inputText)
+                                pasteString(newText)
+                            } catch {
+                                print(error)
+                            }
+                        } else if action.searchURL != nil {
+                            // change inputText to the regex match if regex match is present
+                            if let regexStr = action.regexMatch {
+                                let regexMatch = inputText.match(regexStr)
+                                if regexMatch.count > 0 && regexMatch[0].count > 0 {
+                                    inputText = regexMatch[0][0]
+                                }
+                            }
+                            // replace `{text}` with the string in url-safe form
+                            var urlStr = action.searchURL!
+                            var allowedChars: CharacterSet = .alphanumerics
+                            allowedChars.insert(charactersIn: "/")
+                            let urlSafeInput = inputText.addingPercentEncoding(
+                                withAllowedCharacters: allowedChars)!
+                            urlStr = urlStr.replacingOccurrences(of: "{text}", with: urlSafeInput)
+                            let url = URL(string: urlStr)!
+                            NSWorkspace.shared.open(url)
                         }
                     }
                     break;

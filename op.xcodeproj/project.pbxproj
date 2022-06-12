@@ -33,6 +33,7 @@
 		F4D61AE3284DE7960006617A /* setPopupWindowFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D61AE2284DE7960006617A /* setPopupWindowFrame.swift */; };
 		F4D61AE5284DE8A60006617A /* createSettingsWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D61AE4284DE8A60006617A /* createSettingsWindow.swift */; };
 		F4D61AE7284DE8DA0006617A /* createPopupWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D61AE6284DE8DA0006617A /* createPopupWindow.swift */; };
+		F4DFB8DA28557B1C00623080 /* regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DFB8D928557B1C00623080 /* regex.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,6 +66,7 @@
 		F4D61AE2284DE7960006617A /* setPopupWindowFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = setPopupWindowFrame.swift; sourceTree = "<group>"; };
 		F4D61AE4284DE8A60006617A /* createSettingsWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = createSettingsWindow.swift; sourceTree = "<group>"; };
 		F4D61AE6284DE8DA0006617A /* createPopupWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = createPopupWindow.swift; sourceTree = "<group>"; };
+		F4DFB8D928557B1C00623080 /* regex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = regex.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +159,7 @@
 				F47EF8C02847146800DEB84B /* StatusBar.swift */,
 				F47EF832284499AD00DEB84B /* Assets.xcassets */,
 				F47EF837284499AD00DEB84B /* op.entitlements */,
+				F4DFB8D928557B1C00623080 /* regex.swift */,
 			);
 			path = op;
 			sourceTree = "<group>";
@@ -249,6 +252,7 @@
 				F47EF8C32847AEA700DEB84B /* addEventListeners.swift in Sources */,
 				F477D68328537BF800B8067C /* FloatingPanel.swift in Sources */,
 				F42C3916284C7C3E00CF30DD /* hide-and-show-window.swift in Sources */,
+				F4DFB8DA28557B1C00623080 /* regex.swift in Sources */,
 				F47EF85F2844E1F900DEB84B /* SettingsWindowController.swift in Sources */,
 				F47EF8802844F28200DEB84B /* PopupWindowController.swift in Sources */,
 				F42C390E284C749400CF30DD /* menubar-action.swift in Sources */,

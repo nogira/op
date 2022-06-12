@@ -33,10 +33,7 @@ func proportionalResizeImage(image: NSImage, w: CGFloat, h: CGFloat) -> NSImage 
     let imgH = image.size.height
     let prop1 = imgW / imgH
     let prop2 = w / h
-    var newImgW: CGFloat!
-    var newImgH: CGFloat!
-    var padW: CGFloat!
-    var padH: CGFloat!
+    var newImgW, newImgH, padW, padH: CGFloat!
     // work out if / which sides needs padding
     // if input resize is w=h, and image is w>h: → prop1>prop2, and new imgW will match w, so height will be padded
     // also, imgH will have to be resized as imgH * (w/imgW)

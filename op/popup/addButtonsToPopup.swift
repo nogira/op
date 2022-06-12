@@ -39,10 +39,20 @@ func addButtonsToPopup(_ viewController: PopupViewController, _ appDelegate: App
         // add if enabled
         if actionsEnabled[name] == true {
             // MARK: - decide whether to add action to popup
+            
             // 1. if this is not a paste popup, free to add every button
             if isNotPastePopup ||
                 // 2. if this is a paste popup, and the button is a paste button, add button, otherwise don't add button
                 isPastePopup && popupType == .pasteboard {
+                
+                // check if the selection has a match to the regex
+                if let regexStr = item.regexMatch {
+                    let regexMatch: [[String]] = data.currentSelection.match(regexStr)
+                    // if no matches, skip adding this action
+                    if regexMatch.count == 0 {
+                        continue
+                    }
+                }
                 
                 let btn: CustomNSButton!
                 // MARK: - add icon button
@@ -95,3 +105,29 @@ class CustomImageNSButton: CustomNSButton {
     }
 }
 
+//func firstRegexMatch(_ testString: String, _ regexStr: String) -> String? {
+//    do {
+//        let range = NSRange(location: 0, length: testString.utf16.count)
+//        let regex = try NSRegularExpression(pattern: regexStr, options: [.caseInsensitive])
+//        let firstMatch = regex.firstMatch(in: testString, options: [], range: range)
+//        let matchStr = testString[Range(firstMatch!.range, in: testString)!] as! String
+//        print(matchStr)
+//        return matchStr
+//    } catch {
+//        print(error)
+//    }
+//    return nil
+//}
+//
+//func textHasRegexMatch(_ testString: String, _ regexStr: String?) -> Bool {
+//    if let regexStr = regexStr {
+//        let hasMatches = firstRegexMatch(testString, regexStr) != nil
+//        if hasMatches == true {
+//            return true
+//        }
+//        // if fails or no matches, return false
+//        return false
+//    }
+//    // if no regex, return true
+//    return true
+//}
