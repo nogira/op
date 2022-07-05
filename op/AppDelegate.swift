@@ -97,7 +97,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @objc func openFolder() {
         print("open folder")
         let path: URL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-        let baseFolder: URL =  path.appendingPathComponent("nogira.op")
+        let baseFolder: URL =  path.appendingPathComponent("com.nogira.op")
         let pluginsFolder: URL = baseFolder.appendingPathComponent("plugins")
 
         NSWorkspace.shared.selectFile(

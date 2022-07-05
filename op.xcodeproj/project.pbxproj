@@ -34,6 +34,7 @@
 		F4D61AE5284DE8A60006617A /* createSettingsWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D61AE4284DE8A60006617A /* createSettingsWindow.swift */; };
 		F4D61AE7284DE8DA0006617A /* createPopupWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D61AE6284DE8DA0006617A /* createPopupWindow.swift */; };
 		F4DFB8DA28557B1C00623080 /* regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DFB8D928557B1C00623080 /* regex.swift */; };
+		F4EA5267286EAA3C002B39DE /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EA5266286EAA3C002B39DE /* SwiftUIView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +68,7 @@
 		F4D61AE4284DE8A60006617A /* createSettingsWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = createSettingsWindow.swift; sourceTree = "<group>"; };
 		F4D61AE6284DE8DA0006617A /* createPopupWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = createPopupWindow.swift; sourceTree = "<group>"; };
 		F4DFB8D928557B1C00623080 /* regex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = regex.swift; sourceTree = "<group>"; };
+		F4EA5266286EAA3C002B39DE /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +124,7 @@
 				F4D61AE4284DE8A60006617A /* createSettingsWindow.swift */,
 				F47EF830284499AB00DEB84B /* SettingsViewController.swift */,
 				F47EF85E2844E1F900DEB84B /* SettingsWindowController.swift */,
+				F4EA5266286EAA3C002B39DE /* SwiftUIView.swift */,
 			);
 			path = settings;
 			sourceTree = "<group>";
@@ -254,6 +257,7 @@
 				F42C3916284C7C3E00CF30DD /* hide-and-show-window.swift in Sources */,
 				F4DFB8DA28557B1C00623080 /* regex.swift in Sources */,
 				F47EF85F2844E1F900DEB84B /* SettingsWindowController.swift in Sources */,
+				F4EA5267286EAA3C002B39DE /* SwiftUIView.swift in Sources */,
 				F47EF8802844F28200DEB84B /* PopupWindowController.swift in Sources */,
 				F42C390E284C749400CF30DD /* menubar-action.swift in Sources */,
 				F41CF7C92848B27000F62880 /* initUserDefaults.swift in Sources */,

@@ -14,7 +14,7 @@ func applicationFolder() -> URL {
     // create application support folder if not already
     let appSupFolder: URL = FileManager.default.urls(
         for: .applicationSupportDirectory, in: .userDomainMask)[0]
-    let baseFolder: URL =  appSupFolder.appendingPathComponent("nogira.op")
+    let baseFolder: URL =  appSupFolder.appendingPathComponent("com.nogira.op")
     return baseFolder
 }
 
