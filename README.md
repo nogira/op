@@ -13,3 +13,7 @@
 
   <a href="https://github.com/nogira/op-plugins">plugins</a>
 </div>
+
+<video Autoplay=autoplay controls="controls" style="max-width: 730px;">
+  <source src="https://github.com/nogira/op/blob/main/preview.mov" type="video/quicktime">
+</video>
