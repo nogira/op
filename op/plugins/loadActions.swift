@@ -28,7 +28,7 @@ func loadActions() -> [ActionConfig] {
         ActionConfig(actionName: "AB", inputType: .selection),
         ActionConfig(actionName: "cut", inputType: .selection, iconSFSymbol: SFSymbolNSImage("scissors")),
         ActionConfig(actionName: "copy", inputType: .selection, iconSFSymbol: SFSymbolNSImage("doc.on.doc.fill")),
-        ActionConfig(actionName: "paste =", inputType: .pasteboard),
+        ActionConfig(actionName: "paste =", inputType: .pasteboard, iconSFSymbol: SFSymbolNSImage("doc.on.clipboard")),
     ]
     var actions = defaultActions
     

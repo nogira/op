@@ -22,6 +22,8 @@ func releaseKeyAndCmd(_ key_num: CGKeyCode) -> Void {
 func tapCmdAndKey(_ key: String) -> Void {
     var keyCode: CGKeyCode
     switch key {
+    case "x":
+        keyCode = 7
     case "c":
         keyCode = 8
     case "v":
