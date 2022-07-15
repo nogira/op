@@ -12,8 +12,12 @@
   <br>
 
   <a href="https://github.com/nogira/op-plugins">plugins</a>
+  
+  <br>
+  <br>
+  
+  <!-- clipping the black not supported in github md :( -->
+  <img src="https://github.com/nogira/op/blob/main/preview.gif" />
 </div>
 
-<video Autoplay=autoplay controls="controls" style="max-width: 730px;">
-  <source src="https://github.com/nogira/op/blob/main/preview.mov" type="video/quicktime">
-</video>
+
