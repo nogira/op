@@ -4,7 +4,7 @@
   </h1>
 
   <p>
-    text selection assistant<br>
+    plain-text text selection assistant<br>
     <br>
     <sup>(basically an open-source version of popclip)</sup>
   </p>
