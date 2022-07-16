@@ -5,15 +5,13 @@
 
   <p>
     plain-text text selection assistant<br>
-    <br>
-    <sup>(basically an open-source version of popclip)</sup>
+    <sub>(basically an open-source version of popclip)</sub>
   </p>
 
   <br>
 
   <a href="https://github.com/nogira/op-plugins">plugins</a>
   
-  <br>
   <br>
   
   <!-- clipping the black not supported in github md :( -->
